@@ -65,8 +65,8 @@ jobs:
         if: steps.check.outputs.publish == 'true'
         run: |
           set -euo pipefail
-          npm pack --dry-run --json --ignore-scripts > pack.json
-          node -e 'const files=JSON.parse(require("node:fs").readFileSync("pack.json","utf8"))[0].files.map((f)=>f.path);const bad=files.filter((p)=>p.startsWith("test/"));if(bad.length){console.error("Package includes tests:\n"+bad.join("\n"));process.exit(1)}for(const need of ["bin/recall","package.json","README.md","LICENSE",".claude-plugin/plugin.json",".codex-plugin/plugin.json","hooks/hooks.json"]){if(!files.includes(need)){console.error("Package is missing "+need);process.exit(1)}}'
+          npm pack --dry-run --json --ignore-scripts > "$RUNNER_TEMP/pack.json"
+          node -e 'const files=JSON.parse(require("node:fs").readFileSync(process.env.RUNNER_TEMP+"/pack.json","utf8"))[0].files.map((f)=>f.path);const bad=files.filter((p)=>p.startsWith("test/"));if(bad.length){console.error("Package includes tests:\n"+bad.join("\n"));process.exit(1)}for(const need of ["bin/recall","package.json","README.md","LICENSE",".claude-plugin/plugin.json",".codex-plugin/plugin.json","hooks/hooks.json"]){if(!files.includes(need)){console.error("Package is missing "+need);process.exit(1)}}'
 
       - name: Publish to npm
         if: steps.check.outputs.publish == 'true'
