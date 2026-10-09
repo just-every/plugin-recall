@@ -1,0 +1,20 @@
+{
+  "name": "plugin-recall",
+  "interface": {
+    "displayName": "Recall"
+  },
+  "plugins": [
+    {
+      "name": "recall",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "recall",
+  "version": "0.5.1",
+  "description": "Brings back the few things you said earlier that matter for this request: prompt-time injection of short typed notes (rule, preference, decision, correction), mined from your own Codex and Claude Code history.",
+  "author": {
+    "name": "Just Every",
+    "url": "https://github.com/just-every"
+  },
+  "homepage": "https://github.com/just-every/plugin-recall",
+  "repository": "https://github.com/just-every/plugin-recall",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "hooks",
+    "memory",
+    "recall",
+    "history",
+    "nuance"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Recall",
+    "shortDescription": "Brings back small things you said earlier that matter for this request",
+    "longDescription": "Recall mines what you typed in your Codex and Claude Code history, ranks it with embeddings plus cheap narrow Decisions API judgements, and injects the few earlier directives that apply to the repo and the moment into each prompt, as short typed cards. A bundled skill tells the agent what the cards mean and how to look things up on demand.",
+    "developerName": "Just Every",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Show what Recall injected on the last turn",
+      "Check whether Recall is working",
+      "Show Recall spend today"
+    ],
+    "brandColor": "#7C3AED",
+    "websiteURL": "https://github.com/just-every/plugin-recall"
+  }
+}

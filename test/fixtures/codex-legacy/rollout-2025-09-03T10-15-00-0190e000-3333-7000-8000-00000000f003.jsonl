@@ -1,0 +1,13 @@
+{"id":"0190e000-3333-7000-8000-00000000f003","timestamp":"2025-09-03T10:15:00.123Z","instructions":"Synthetic project instructions for the fixture. [...elided for fixture]","cwd":"/home/sam/projects/ledger-cli","model":"gpt-5","git":{"commit_hash":"0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f","branch":"main","repository_url":"git@github.com:sam/ledger-cli.git"}}
+{"record_type":"state"}
+{"type":"message","id":null,"role":"user","content":[{"type":"input_text","text":"<environment_context>\n  <cwd>/home/sam/projects/ledger-cli</cwd>\n  <approval_policy>on-request</approval_policy>\n</environment_context>"}]}
+{"record_type":"state"}
+{"type":"message","id":null,"role":"user","content":[{"type":"input_text","text":"Why does the balance command print negative zero for empty accounts?"}]}
+{"record_type":"state"}
+{"type":"reasoning","id":"rs_fixture_1","summary":[],"content":null,"encrypted_content":"[elided for fixture]"}
+{"type":"function_call","id":"fc_fixture_1","name":"shell","arguments":"{\"command\":[\"rg\",\"-n\",\"balance\"]}","call_id":"call_fixture_1"}
+{"type":"function_call_output","call_id":"call_fixture_1","output":"{\"output\":\"src/balance.rs:12: fn balance()\",\"metadata\":{\"exit_code\":0}}"}
+{"type":"message","id":"msg_fixture_1","role":"assistant","content":[{"type":"output_text","text":"The formatter prints -0.00 because the sum is a float that rounds to minus zero."}]}
+{"record_type":"state"}
+{"type":"message","id":null,"role":"user","content":[{"type":"input_text","text":"Round to cents before formatting and add a test for an empty account"}]}
+{"record_type":"state"}

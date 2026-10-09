@@ -1,0 +1,17 @@
+{
+  "dailyCapUsd": 5,
+  "totalCapUsd": 1.5,
+  "homesRoster": "~/fleet/usage/lib/homes.mjs",
+  "usageCmd": "node ~/fleet/usage/usage.mjs",
+  "homes": [
+    { "path": "~/.codex_backup", "kind": "codex" },
+    { "path": "~/old-laptop/home/sam/.code", "kind": "code" },
+    { "path": "~/old-laptop/home/sam/.codex", "kind": "codex" },
+    { "path": "~/.codex_scratch", "kind": "codex" },
+    { "path": "~/.claude_work_sam", "kind": "claude" },
+    { "path": "~/.claude_work_rivera", "kind": "claude" }
+  ],
+  "ownerNames": ["owner", "sam", "rivera", "sam rivera"],
+  "ownerEmails": ["sam@example.com", "sam.rivera@example.org"],
+  "filterProfiles": ["fleet"]
+}

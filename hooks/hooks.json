@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PLUGIN_ROOT}/scripts/user-prompt-submit.mjs\"",
+            "timeout": 28,
+            "statusMessage": "Recall is searching earlier things you said"
+          }
+        ]
+      }
+    ]
+  }
+}

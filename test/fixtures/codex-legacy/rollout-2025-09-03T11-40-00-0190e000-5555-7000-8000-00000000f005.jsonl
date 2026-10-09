@@ -1,0 +1,4 @@
+{"id":"0190e000-5555-7000-8000-00000000f005","timestamp":"2025-09-03T11:40:00.456Z","instructions":"Synthetic project instructions for the fixture. [...elided for fixture]"}
+{"record_type":"state"}
+{"type":"message","id":null,"role":"user","content":[{"type":"input_text","text":"Context: a repository with a CLI under src. Scan it and list every command with its flags."}]}
+{"record_type":"state"}

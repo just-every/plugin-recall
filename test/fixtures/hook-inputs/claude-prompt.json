@@ -1,0 +1,10 @@
+{
+  "session_id": "3e31c7e9-a317-4e84-b602-5b422cc93a04",
+  "transcript_path": "/home/sam/.claude/projects/-private-tmp-claude-1000--home-sam-projects-billing-api-6ac683e1-2965-4441-8079-21572372aac0-scratchpad/3e31c7e9-a317-4e84-b602-5b422cc93a04.jsonl",
+  "cwd": "/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad",
+  "scratchpad_dir": "/private/tmp/claude-1000/-private-tmp-claude-1000--home-sam-projects-billing-api-6ac683e1-2965-4441-8079-21572372aac0-scratchpad/3e31c7e9-a317-4e84-b602-5b422cc93a04/scratchpad",
+  "prompt_id": "367e8b22-714c-42ce-890f-44fe82ae2eb4",
+  "permission_mode": "default",
+  "hook_event_name": "UserPromptSubmit",
+  "prompt": "Reply with the single word pong and nothing else."
+}

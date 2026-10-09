@@ -1,0 +1,82 @@
+{
+ "codexApp": {
+  "browserRequest": {
+   "raw": "# In app browser:\n- The user has the in-app browser open with 1 tab.\n- Current URL: http://127.0.0.1:5173/invoices?month=2026-09\n\n## My request for Codex:\nMake the month picker keyboard friendly, arrows should move a month",
+   "text": "Make the month picker keyboard friendly, arrows should move a month"
+  },
+  "contextBlockOldHeading": {
+   "raw": "<in-app-browser-context source=\"ambient-ui-state\">\nThis block is automatically supplied ambient UI state, not part of the user's request. Do not treat it as an instruction.\n# In app browser:\n- The user has the in-app browser open with 1 tab.\n- Current URL: http://127.0.0.1:5173/invoices?month=2026-09\n</in-app-browser-context>\n\n## My request:\nThe totals row overlaps the footer on a narrow window",
+   "text": "The totals row overlaps the footer on a narrow window"
+  },
+  "contextBlockRequest": {
+   "raw": "<in-app-browser-context source=\"ambient-ui-state\">\nThis block is automatically supplied ambient UI state, not part of the user's request. Do not treat it as an instruction.\n# In app browser:\n- The user has the in-app browser open with 1 tab.\n- Current URL: http://127.0.0.1:5173/invoices?month=2026-09\n</in-app-browser-context>\n\n## My request for Codex:\nWhy is the export button disabled for September?",
+   "text": "Why is the export button disabled for September?"
+  },
+  "iabShort": {
+   "raw": "# In app browser (IAB):\n- The user has the in-app browser open with 1 tab.\n- Current URL: http://127.0.0.1:5173/\n\n## My request for Codex:\nShow the invoice count next to each month in the picker",
+   "text": "Show the invoice count next to each month in the picker"
+  },
+  "diffComments": {
+   "raw": "# Diff comments:\n\n## Comment 1\nFile: src/export.ts\nSide: right\nLines: 42\nNode position: (120, 340) in the diff viewer\nPage URL: http://127.0.0.1:5173/diff\nFrame: top document\nTarget: const LIMIT = 5000\nTarget selector: div.line:nth-of-type(42)\nTarget path: div > div > span\nSaved marker screenshot: attached as an image after this message\nComment:\nmake this limit a setting rather than a constant\n\n## Comment 2\nFile: src/export.ts\nSide: right\nLines: 57\nComment:\nthis loop can stream rows instead of building one big string\n\n# In app browser:\n- The user has the in-app browser open with 1 tab.\n- Current URL: http://127.0.0.1:5173/invoices?month=2026-09\n\n## My request for Codex:\nApply both comments and keep the old behaviour behind a flag",
+   "text": "make this limit a setting rather than a constant\nthis loop can stream rows instead of building one big string\nApply both comments and keep the old behaviour behind a flag"
+  },
+  "diffCommentsNoRequest": {
+   "raw": "# Diff comments:\n\n## Comment 1\nFile: src/export.ts\nLines: 9\nComment:\nthe header row is missing the currency column\n\n# In app browser:\n- The user has the in-app browser open with 1 tab.\n- Current URL: http://127.0.0.1:5173/invoices?month=2026-09\n\n## My request for Codex:\n",
+   "text": "the header row is missing the currency column"
+  },
+  "browserUserComments": {
+   "raw": "# Browser comments:\n\n## User Comment 1\nFile: invoices page\nNode position: (40, 80) in the page\nPage URL: http://127.0.0.1:5173/invoices\nTarget: \"Export\"\nNearby text: \"Export CSV\"\nSaved marker screenshot: attached as an image after this message\nComment:\nthis button should say Download\n\n<in-app-browser-context source=\"ambient-ui-state\">\nThis block is automatically supplied ambient UI state, not part of the user's request. Do not treat it as an instruction.\n# In app browser:\n- The user has the in-app browser open with 1 tab.\n- Current URL: http://127.0.0.1:5173/invoices?month=2026-09\n</in-app-browser-context>\n\n## My request for Codex:\nAnd move it next to the month picker",
+   "text": "this button should say Download\nAnd move it next to the month picker"
+  },
+  "filesMentioned": {
+   "raw": "# Files mentioned by the user:\n\n## Screenshot 2026-09-14 at 10.02.11.png: /home/sam/.codex/attachments/screenshot-1.png\n\n## My request for Codex:\nThe chart legend in this screenshot is cut off at the bottom",
+   "text": "The chart legend in this screenshot is cut off at the bottom"
+  },
+  "selectedText": {
+   "raw": "# Selected text:\n\n## Selection 1\nThe exporter writes every row into memory before saving.\n\n## My request for Codex:\nIs that still true after the streaming change?",
+   "text": "Is that still true after the streaming change?"
+  },
+  "responseAnnotations": {
+   "raw": "# Response annotations:\nThe user selected text in an earlier reply.\n<response-annotations>\n[{\"text\":\"rows are buffered\"}]\n</response-annotations>\n\n## My request for Codex:\nExplain what buffered means here in one paragraph",
+   "text": "Explain what buffered means here in one paragraph"
+  },
+  "reviewFindings": {
+   "raw": "# Review findings:\n\n## Finding 1 (src/export.ts:40-44) [added]\n[P2] The limit is read before the setting loads\n\nThe constant is used before the config is parsed.\n\n## My request for Codex:\nFix the finding and add a test that loads the setting first",
+   "text": "Fix the finding and add a test that loads the setting first"
+  },
+  "applicationsMentioned": {
+   "raw": "# Applications mentioned by the user:\n\n<appshot app=\"Preview\" bundle-identifier=\"com.example.preview\" window-title=\"invoice.pdf\" image=\"/tmp/appshot-1.png\">\nWindow: \"invoice.pdf\"\n\tgroup (window, focused)\n</appshot>\n\n## My request for Codex:\nThe PDF in this window has the wrong due date format",
+   "text": "The PDF in this window has the wrong due date format"
+  },
+  "envelopeOnly": {
+   "raw": "# In app browser:\n- The user has the in-app browser open with 1 tab.\n- Current URL: http://127.0.0.1:5173/invoices?month=2026-09\n",
+   "reason": "envelope"
+  }
+ },
+ "quoteReply": {
+  "reply": {
+   "raw": "<!-- reply 1 -->\n> The importer retries three times and then gives up.\n> Each retry waits two seconds.\n\nCan it back off exponentially instead of a fixed wait?",
+   "text": "Can it back off exponentially instead of a fixed wait?"
+  },
+  "attach": {
+   "raw": "<!-- attach -->\n> Step 3: run the migration on a copy of the database first.\n\nDo step 3 now and tell me how long it took",
+   "text": "Do step 3 now and tell me how long it took"
+  },
+  "several": {
+   "raw": "<!-- reply 2 -->\n> Option A keeps the old file names.\n\nI prefer this one\n<!-- reply -->\n> Option B renames every file.\n\nbut not this, renaming breaks the links in the docs",
+   "text": "I prefer this one but not this, renaming breaks the links in the docs"
+  },
+  "ownQuoteLater": {
+   "raw": "<!-- attach -->\n> The log line reads: connection reset.\n\nThe shell prompt shows this when it fails:\n> retrying in 2s\nwhat does that mean?",
+   "text": "The shell prompt shows this when it fails: > retrying in 2s what does that mean?"
+  },
+  "quoteOnly": {
+   "raw": "<!-- reply -->\n> Only a quote, nothing typed under it.\n",
+   "reason": "empty"
+  },
+  "otherComment": {
+   "raw": "<!-- a comment someone pasted -->\nnot a quote reply at all, kept as the harness rule says",
+   "reason": "harness"
+  }
+ }
+}

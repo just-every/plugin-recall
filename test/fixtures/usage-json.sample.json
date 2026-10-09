@@ -1,0 +1,243 @@
+{
+ "checkedAt": "2026-10-07T12:45:47.852Z",
+ "results": [
+  {
+   "path": "/home/sam/.claude",
+   "kind": "claude",
+   "account": "user@example.com",
+   "plan": "max",
+   "windows": [
+    {
+     "label": "5h All",
+     "usedPercent": 11,
+     "elapsedPercent": 45,
+     "resetsInMin": 164,
+     "windowMinutes": 300
+    },
+    {
+     "label": "1w All",
+     "usedPercent": 80,
+     "elapsedPercent": 79,
+     "resetsInMin": 2114,
+     "windowMinutes": 10080
+    },
+    {
+     "label": "1w Opus",
+     "usedPercent": 1,
+     "elapsedPercent": 79,
+     "resetsInMin": 2114,
+     "windowMinutes": 10080
+    }
+   ]
+  },
+  {
+   "path": "/home/sam/.claude_side",
+   "kind": "claude",
+   "account": "user@example.com",
+   "plan": "max",
+   "windows": [
+    {
+     "label": "5h All",
+     "usedPercent": 0,
+     "windowMinutes": 300
+    },
+    {
+     "label": "1w All",
+     "usedPercent": 100,
+     "elapsedPercent": 71,
+     "resetsInMin": 2954,
+     "windowMinutes": 10080
+    },
+    {
+     "label": "1w Opus",
+     "usedPercent": 0,
+     "elapsedPercent": 71,
+     "resetsInMin": 2954,
+     "windowMinutes": 10080
+    }
+   ],
+   "extra": [
+    "1 limit reset (session + weekly)"
+   ]
+  },
+  {
+   "path": "/home/sam/.claude_work",
+   "kind": "claude",
+   "account": "user@example.com",
+   "plan": "max",
+   "windows": [
+    {
+     "label": "5h All",
+     "usedPercent": 14,
+     "elapsedPercent": 55,
+     "resetsInMin": 134,
+     "windowMinutes": 300
+    },
+    {
+     "label": "1w All",
+     "usedPercent": 29,
+     "elapsedPercent": 26,
+     "resetsInMin": 7454,
+     "windowMinutes": 10080
+    },
+    {
+     "label": "1w Opus",
+     "usedPercent": 1,
+     "elapsedPercent": 26,
+     "resetsInMin": 7454,
+     "windowMinutes": 10080
+    }
+   ],
+   "extra": [
+    "1 limit reset (session + weekly)"
+   ]
+  },
+  {
+   "path": "/home/sam/.claude_team",
+   "kind": "claude",
+   "account": "user@example.com",
+   "plan": "team",
+   "windows": [
+    {
+     "label": "5h All",
+     "usedPercent": 58,
+     "elapsedPercent": 72,
+     "resetsInMin": 84,
+     "windowMinutes": 300
+    },
+    {
+     "label": "1w Opus",
+     "usedPercent": 0,
+     "elapsedPercent": 43,
+     "resetsInMin": 5714,
+     "windowMinutes": 10080
+    }
+   ],
+   "ageSec": 163
+  },
+  {
+   "path": "/home/sam/.codex",
+   "kind": "codex",
+   "account": "user@example.com",
+   "plan": "pro",
+   "windows": [
+    {
+     "label": "1w",
+     "usedPercent": 7,
+     "elapsedPercent": 5,
+     "resetsInMin": 8000,
+     "windowMinutes": 10080
+    }
+   ],
+   "extra": []
+  },
+  {
+   "path": "/home/sam/.codex_a",
+   "kind": "codex",
+   "account": "user@example.com",
+   "plan": "pro",
+   "windows": [
+    {
+     "label": "1w",
+     "usedPercent": 68,
+     "elapsedPercent": 6,
+     "resetsInMin": 8000,
+     "windowMinutes": 10080
+    }
+   ]
+  },
+  {
+   "path": "/home/sam/.codex_b",
+   "kind": "codex",
+   "account": "user@example.com",
+   "plan": "pro",
+   "windows": [
+    {
+     "label": "1w",
+     "usedPercent": 1,
+     "elapsedPercent": 5,
+     "resetsInMin": 8000,
+     "windowMinutes": 10080
+    }
+   ]
+  },
+  {
+   "path": "/home/sam/.codex_c",
+   "kind": "codex",
+   "account": "user@example.com",
+   "plan": "prolite",
+   "windows": [
+    {
+     "label": "1w",
+     "usedPercent": 100,
+     "elapsedPercent": 6,
+     "resetsInMin": 8000,
+     "windowMinutes": 10080
+    }
+   ]
+  },
+  {
+   "path": "/home/sam/.codex_d",
+   "kind": "codex",
+   "account": "user@example.com",
+   "plan": "promax",
+   "windows": [
+    {
+     "label": "1w",
+     "usedPercent": 17,
+     "elapsedPercent": 5,
+     "resetsInMin": 8000,
+     "windowMinutes": 10080
+    }
+   ]
+  },
+  {
+   "path": "/home/sam/.codex_work",
+   "kind": "codex",
+   "account": "user@example.com",
+   "plan": "pro",
+   "windows": [
+    {
+     "label": "1w",
+     "usedPercent": 4,
+     "elapsedPercent": 5,
+     "resetsInMin": 8000,
+     "windowMinutes": 10080
+    }
+   ],
+   "serviceTier": "default"
+  },
+  {
+   "path": "/home/sam/.codex_alt",
+   "kind": "codex",
+   "account": "user@example.com",
+   "plan": "pro",
+   "windows": [
+    {
+     "label": "1w",
+     "usedPercent": 39,
+     "elapsedPercent": 5,
+     "resetsInMin": 8000,
+     "windowMinutes": 10080
+    }
+   ],
+   "serviceTier": "default"
+  },
+  {
+   "path": "/home/sam/.codex_spare",
+   "kind": "codex",
+   "account": "user@example.com",
+   "plan": "pro",
+   "windows": [
+    {
+     "label": "1w",
+     "usedPercent": 54,
+     "elapsedPercent": 6,
+     "resetsInMin": 8000,
+     "windowMinutes": 10080
+    }
+   ],
+   "serviceTier": "default"
+  }
+ ]
+}

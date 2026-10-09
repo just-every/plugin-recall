@@ -1,0 +1,75 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Publish @just-every/plugin-recall
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: https://registry.npmjs.org
+
+      - name: Is this version already on npm?
+        id: check
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if npm view "@just-every/plugin-recall@$VERSION" version >/dev/null 2>&1; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "@just-every/plugin-recall@$VERSION is already on npm; nothing to publish."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Test
+        run: npm test
+
+      - name: Verify package contents
+        if: steps.check.outputs.publish == 'true'
+        run: |
+          set -euo pipefail
+          npm pack --dry-run --json --ignore-scripts > pack.json
+          node -e 'const files=JSON.parse(require("node:fs").readFileSync("pack.json","utf8"))[0].files.map((f)=>f.path);const bad=files.filter((p)=>p.startsWith("test/"));if(bad.length){console.error("Package includes tests:\n"+bad.join("\n"));process.exit(1)}for(const need of ["bin/recall","package.json","README.md","LICENSE",".claude-plugin/plugin.json",".codex-plugin/plugin.json","hooks/hooks.json"]){if(!files.includes(need)){console.error("Package is missing "+need);process.exit(1)}}'
+
+      - name: Publish to npm
+        if: steps.check.outputs.publish == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
+            echo "NPM_TOKEN is not set for this repository; cannot publish." >&2
+            exit 1
+          fi
+          npm publish --access public
+
+      - name: Tag and release
+        if: steps.check.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          set -euo pipefail
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
+          printf 'Released @just-every/plugin-recall@%s to npm.\n\nInstall into every Claude Code and Codex home on this machine:\n\n```bash\nnpx -y @just-every/plugin-recall\n```\n' "$VERSION" > notes.md
+          gh release create "v$VERSION" --repo "$GITHUB_REPOSITORY" --title "v$VERSION" --notes-file notes.md

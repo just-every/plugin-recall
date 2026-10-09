@@ -1,0 +1,7 @@
+{"display":"The invoices page should remember the last month filter between visits","pastedContents":{},"timestamp":1757062800000,"project":"/home/sam/projects/web-app","sessionId":"5bbb0000-0000-4000-8000-000000000001"}
+{"display":"Use this error text for the empty state: [Pasted text #1 +2 lines]","pastedContents":{"1":{"id":1,"type":"text","content":"No invoices for this month yet.\nTry another month or create one."}},"timestamp":1757062860000,"project":"/home/sam/projects/web-app","sessionId":"5bbb0000-0000-4000-8000-000000000001"}
+{"display":"Please read docs/HANDOVER.md before changing the importer","pastedContents":{},"timestamp":1757063000000,"project":"/home/sam/projects/demo-repo","sessionId":"5bbb0000-0000-4000-8000-000000000002"}
+{"display":"Please read docs/HANDOVER.md before changing the importer","pastedContents":{},"timestamp":1757063100000,"project":"/home/sam/projects/billing-api","sessionId":"5bbb0000-0000-4000-8000-000000000003"}
+{"display":"/model","pastedContents":{},"timestamp":1757063200000,"project":"/home/sam/projects/web-app","sessionId":"5bbb0000-0000-4000-8000-000000000001"}
+{"display":"Summarize the scratch output and reply with one line","pastedContents":{},"timestamp":1757063300000,"project":"/private/tmp/scratch-worker-7"}
+{"display":"Older rows have no session id; this one still counts as typed","pastedContents":{},"timestamp":1730000000000,"project":"/home/sam/projects/web-app"}

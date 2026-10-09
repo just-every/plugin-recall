@@ -1,0 +1,7 @@
+{"session_id":"0190e000-1111-7000-8000-00000000f001","ts":1756807200,"text":"/plan add a CSV export to the invoices table with a filter per month"}
+{"session_id":"0190e000-1111-7000-8000-00000000f001","ts":1756807260,"text":"Keep the export columns in the same order as the table on screen"}
+{"session_id":"0190e000-1111-7000-8000-00000000f001","ts":1756807300,"text":"/status"}
+{"session_id":"0190e000-2222-7000-8000-00000000f002","ts":1756810800,"text":"This session has a rollout, so the rollout speaks for it and this row is skipped"}
+{"session_id":"0190e000-1111-7000-8000-00000000f001","ts":1756807400,"text":"Send the finished file to billing-team@example.org when the export works"}
+{"session_id":"0190e000-4444-7000-8000-00000000f004","ts":1756814400,"text":"Rename the ledger-cli flag --dry to --dry-run everywhere, including the docs"}
+{"session_id":"0190e000-1111-7000-8000-00000000f001","ts":1756807500,"text":"Also show a row count under the export button once it finishes"}

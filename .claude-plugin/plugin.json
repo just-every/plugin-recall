@@ -1,0 +1,13 @@
+{
+  "name": "recall",
+  "version": "0.5.1",
+  "description": "Brings back the few things you said earlier that matter for this request: prompt-time injection of short typed notes (rule, preference, decision, correction), mined from your own Claude Code and Codex history.",
+  "author": {
+    "name": "Just Every",
+    "url": "https://github.com/just-every"
+  },
+  "homepage": "https://github.com/just-every/plugin-recall",
+  "repository": "https://github.com/just-every/plugin-recall",
+  "license": "MIT",
+  "keywords": ["memory", "recall", "hooks", "history", "nuance"]
+}

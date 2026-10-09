@@ -1,0 +1,4 @@
+{
+  "_about": "Synthetic line mirroring the user record `claude -p` writes when run from inside a desktop session (Claude Code 2.1.287): the entrypoint is the inherited claude-desktop and only promptSource and turnOrigin say sdk.",
+  "nested_claude_p_user": "{\"parentUuid\":null,\"isSidechain\":false,\"promptId\":\"42b2c677-099e-4be9-9cbb-ccdeccf56a3f\",\"type\":\"user\",\"message\":{\"role\":\"user\",\"content\":\"Reply with exactly: ok\"},\"uuid\":\"7a1da0b9-8f52-411a-8bdd-67bf1537a263\",\"timestamp\":\"2026-10-07T22:07:05.505Z\",\"permissionMode\":\"default\",\"promptSource\":\"sdk\",\"turnOrigin\":\"sdk\",\"turnPosition\":{\"promptIndex\":0,\"turnIndex\":1},\"userType\":\"external\",\"entrypoint\":\"claude-desktop\",\"cwd\":\"/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad/probe\",\"sessionId\":\"1651f8a6-93c4-443a-9af7-b50758457e2a\",\"version\":\"2.1.287\",\"gitBranch\":\"HEAD\"}"
+}

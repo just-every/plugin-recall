@@ -1,0 +1,523 @@
+{
+  "name": "x3-rrf-pf-s",
+  "description": "Prefilter (embeddings top 150, BM25 top 60, same-thread newest 30), D-generic over the prefilter, reciprocal rank fusion of embeddings + BM25 + D-generic (D weighted 2).",
+  "selected_by": {
+    "rule": "best 5-fold case-level CV recall@5 on 104 verified x1 v2 cases; p50 <= 4 s; cost <= $0.01 per query; ties to cheaper",
+    "cv_hits5": 47,
+    "cv_recall5": 0.4519230769230769,
+    "ci95_recall5": [
+      0.3557692307692308,
+      0.5480769230769231
+    ],
+    "embeddings_recall5": 0.25961538461538464,
+    "delta_vs_embeddings_r5": {
+      "diff": 0.19230769230769232,
+      "lo": 0.09615384615384616,
+      "hi": 0.28846153846153844,
+      "n": 104
+    },
+    "fold_constants": [
+      {
+        "k": 60,
+        "wDg": 2
+      },
+      {
+        "k": 60,
+        "wDg": 2
+      },
+      {
+        "k": 60,
+        "wDg": 2
+      },
+      {
+        "k": 60,
+        "wDg": 2
+      },
+      {
+        "k": 60,
+        "wDg": 2
+      }
+    ],
+    "refit_constants": {
+      "k": 60,
+      "wDg": 2
+    },
+    "runner_ups_within_one_case": [
+      {
+        "arm": "rerank-top20: codex exec",
+        "hits5": 51,
+        "eligible": false,
+        "reasons": [
+          "p50 11.9 s > 4 s"
+        ]
+      },
+      {
+        "arm": "LR+battery|PF-A",
+        "hits5": 49,
+        "eligible": false,
+        "reasons": [
+          "cost $0.0317 > $0.01"
+        ]
+      },
+      {
+        "arm": "RRF|PF-A",
+        "hits5": 46,
+        "eligible": true,
+        "reasons": []
+      },
+      {
+        "arm": "LR|PF-A",
+        "hits5": 46,
+        "eligible": true,
+        "reasons": []
+      },
+      {
+        "arm": "LR|PF-B",
+        "hits5": 46,
+        "eligible": true,
+        "reasons": []
+      },
+      {
+        "arm": "RRF|PF-D",
+        "hits5": 46,
+        "eligible": true,
+        "reasons": []
+      },
+      {
+        "arm": "LR|PF-D",
+        "hits5": 46,
+        "eligible": true,
+        "reasons": []
+      }
+    ],
+    "selection_file": "results/selection.json"
+  },
+  "history": {
+    "eligibility": "owner statements strictly before the decision time (parsed timestamps, microseconds), not already in the current session context, not the reply being predicted; each distinct normalised text is one item (x1 corpus, item id = o + sha1(normalised text)[:11])",
+    "item_text": "full owner statement text"
+  },
+  "query": {
+    "mode": "stop-time (the agent turn)",
+    "situation": {
+      "format": "SITUATION (conversation so far, newest last):\n\n<turn>\n\n<turn>\n\nASSISTANT (latest message): <clip(assistant_text, 1500)>",
+      "turns": "the last 2 conversation turns before the assistant message, each rendered \"OWNER: <clip(text, 500)>\" or \"ASSISTANT: <clip(text, 500)>\"; zero to two turns if fewer exist",
+      "clip_rule": "trim; if length <= n keep, else text[0:n] with trailing whitespace trimmed + \" [...]\"",
+      "never_contains": "the owner reply being predicted"
+    },
+    "embedding": {
+      "model": "text-embedding-3-small",
+      "dimensions": 1536,
+      "text": "clip(situation, 6000)",
+      "similarity": "cosine (unit vectors: dot product)"
+    },
+    "bm25": {
+      "query": "tokenize(situation) (full text, no clip)",
+      "docs": "tokenize(clip(item text, 4000)) over the eligible history only",
+      "k1": 1.2,
+      "b": 0.75,
+      "idf": "ln(1 + (N - n + 0.5) / (n + 0.5)) with N and n counted over the eligible history only",
+      "tokenizer": "lowercase; matches [a-z0-9_$./-]{2,}; strip leading/trailing . / -; keep length >= 2; drop the stopword list in x1 lib/text.ts",
+      "tie_break": "item id ascending"
+    },
+    "same_thread_list": "eligible items whose thread equals the current thread, newest first"
+  },
+  "prefilter": {
+    "sources": [
+      "embeddings: top 150 by cosine",
+      "bm25: top 60",
+      "same-thread newest: top 30"
+    ],
+    "union": "set union, deduplicated",
+    "size_mean_104_cases": 198.39423076923092,
+    "size_mean_live_30": 201.16666666666666
+  },
+  "d_generic": {
+    "model": "gpt-6-luna",
+    "endpoint": "POST /v1/decisions",
+    "question_type": "predicate",
+    "input": "the situation text",
+    "one_question_per_prefilter_item": true,
+    "instructions": "Past owner statement: \"<clip(item text, 260)>\"\nIs this past owner statement important for handling the situation above correctly?",
+    "item_clip": {
+      "chars": 260,
+      "rule": "head clip with the \" [...]\" marker (trim; if longer than 260 keep the first 260 chars, trim trailing whitespace, append \" [...]\")"
+    },
+    "pack": {
+      "max_questions_per_request": 200,
+      "pack_size": 72,
+      "note": "answers do not depend on packing or order (probe g); pack size only trades requests for latency; packs are sent concurrently"
+    },
+    "refusals": "an answer of type refusal is treated as unscored: the item is ranked after all scored items in the D list, in embedding order, and counted",
+    "cost": "about $0.0000212 per question (measured), about $0.0044 per query live"
+  },
+  "fusion": {
+    "type": "reciprocal rank fusion",
+    "lists": [
+      "E: full-history embedding rank",
+      "B: full-history BM25 rank",
+      "Dg: rank within the prefilter by D-generic score (descending), ties by E rank; refused items last in E order"
+    ],
+    "formula": "score(i) = w_e/(k+E(i)) + w_b/(k+B(i)) + w_dg/(k+Dg(i)), ranks 1-based",
+    "k": 60,
+    "w_e": 1,
+    "w_b": 1,
+    "w_dg": 2,
+    "same_thread_list": "not used (same-thread recency variants did not win)",
+    "candidates": "prefilter items only",
+    "order": "score descending",
+    "tie_break": "E rank ascending (then item position ascending)",
+    "output_k": 5
+  },
+  "thresholds": {
+    "injection": {
+      "k": 5,
+      "tau_dgeneric": 0.9,
+      "rule": "inject at most k=5 top-ranked items, each with D-generic score >= tau; tau = largest of {0.5,0.7,0.9,0.95,0.99} keeping >= 90% of the ungated top-5 hit cases",
+      "cases_with_needle_ungated": 47,
+      "cases_with_needle_gated": 45,
+      "injected_per_case": 4.125,
+      "precision_lower_bound": 0.1282051282051282,
+      "table": [
+        {
+          "tau": 0,
+          "cases_with_needle_injected": 47,
+          "share_of_cases": 0.4519230769230769,
+          "injected_per_case": 5,
+          "cases_with_any_injection": 104,
+          "precision_lower_bound": 0.11153846153846154
+        },
+        {
+          "tau": 0.5,
+          "cases_with_needle_injected": 46,
+          "share_of_cases": 0.4423076923076923,
+          "injected_per_case": 4.865384615384615,
+          "cases_with_any_injection": 104,
+          "precision_lower_bound": 0.11264822134387352
+        },
+        {
+          "tau": 0.7,
+          "cases_with_needle_injected": 46,
+          "share_of_cases": 0.4423076923076923,
+          "injected_per_case": 4.730769230769231,
+          "cases_with_any_injection": 104,
+          "precision_lower_bound": 0.11382113821138211
+        },
+        {
+          "tau": 0.9,
+          "cases_with_needle_injected": 45,
+          "share_of_cases": 0.4326923076923077,
+          "injected_per_case": 4.125,
+          "cases_with_any_injection": 103,
+          "precision_lower_bound": 0.1282051282051282
+        },
+        {
+          "tau": 0.95,
+          "cases_with_needle_injected": 40,
+          "share_of_cases": 0.38461538461538464,
+          "injected_per_case": 3.3076923076923075,
+          "cases_with_any_injection": 102,
+          "precision_lower_bound": 0.14244186046511628
+        },
+        {
+          "tau": 0.99,
+          "cases_with_needle_injected": 28,
+          "share_of_cases": 0.2692307692307692,
+          "injected_per_case": 1.7019230769230769,
+          "cases_with_any_injection": 77,
+          "precision_lower_bound": 0.1864406779661017
+        }
+      ]
+    },
+    "prompt_time_injection": {
+      "note": "for the UserPromptSubmit hook the same pipeline runs with the prompt-time situation (below); recall is lower than at stop time",
+      "tau_dgeneric": 0.95,
+      "table": [
+        {
+          "tau": 0,
+          "cases_with_needle_injected": 25,
+          "share_of_cases": 0.29411764705882354,
+          "injected_per_case": 5,
+          "precision_lower_bound": 0.07764705882352942
+        },
+        {
+          "tau": 0.5,
+          "cases_with_needle_injected": 24,
+          "share_of_cases": 0.2823529411764706,
+          "injected_per_case": 4.847058823529411,
+          "precision_lower_bound": 0.07766990291262135
+        },
+        {
+          "tau": 0.7,
+          "cases_with_needle_injected": 24,
+          "share_of_cases": 0.2823529411764706,
+          "injected_per_case": 4.788235294117647,
+          "precision_lower_bound": 0.07862407862407862
+        },
+        {
+          "tau": 0.9,
+          "cases_with_needle_injected": 24,
+          "share_of_cases": 0.2823529411764706,
+          "injected_per_case": 4.517647058823529,
+          "precision_lower_bound": 0.08072916666666667
+        },
+        {
+          "tau": 0.95,
+          "cases_with_needle_injected": 23,
+          "share_of_cases": 0.27058823529411763,
+          "injected_per_case": 4.247058823529412,
+          "precision_lower_bound": 0.08310249307479224
+        },
+        {
+          "tau": 0.99,
+          "cases_with_needle_injected": 21,
+          "share_of_cases": 0.24705882352941178,
+          "injected_per_case": 3.588235294117647,
+          "precision_lower_bound": 0.08524590163934426
+        }
+      ]
+    },
+    "violation_audit": {
+      "wording_prereg_V1": "Does the ASSISTANT's latest message in the situation above contradict, ignore, or fail to apply this earlier instruction from the owner?",
+      "wording_used": "Does this earlier owner statement apply to the work in the situation above, AND does the ASSISTANT's latest message contradict it or fail to follow it?",
+      "wording_id": "V4",
+      "question_type": "predicate, same layout as D-generic: instructions = `Past owner statement: \"<clip 260>\"\n<wording>`, input = the stop-time situation",
+      "audited_items": "the top 20 of the pipeline ranking (rule-selected, PLAN amendment 3)",
+      "tau_violation": 0.5,
+      "at_tau": {
+        "tau": 0.5,
+        "flags_per_case_mean": 5.990384615384615,
+        "flags_per_case_median": 6,
+        "flags_per_case_p90": 12,
+        "share_cases_with_any_flag": 0.9423076923076923,
+        "precision_lower_bound": 0.0593900481540931,
+        "tp": 37,
+        "flags": 623,
+        "cases_with_needle_flagged": 29,
+        "share_cases_with_needle_flagged": 0.27884615384615385
+      },
+      "table_top20": [
+        {
+          "tau": 0.5,
+          "flags_per_case_mean": 5.990384615384615,
+          "flags_per_case_median": 6,
+          "flags_per_case_p90": 12,
+          "share_cases_with_any_flag": 0.9423076923076923,
+          "precision_lower_bound": 0.0593900481540931,
+          "tp": 37,
+          "flags": 623,
+          "cases_with_needle_flagged": 29,
+          "share_cases_with_needle_flagged": 0.27884615384615385
+        },
+        {
+          "tau": 0.9,
+          "flags_per_case_mean": 1.0096153846153846,
+          "flags_per_case_median": 0,
+          "flags_per_case_p90": 3,
+          "share_cases_with_any_flag": 0.46153846153846156,
+          "precision_lower_bound": 0.11428571428571428,
+          "tp": 12,
+          "flags": 105,
+          "cases_with_needle_flagged": 10,
+          "share_cases_with_needle_flagged": 0.09615384615384616
+        },
+        {
+          "tau": 0.99,
+          "flags_per_case_mean": 0.08653846153846154,
+          "flags_per_case_median": 0,
+          "flags_per_case_p90": 0,
+          "share_cases_with_any_flag": 0.057692307692307696,
+          "precision_lower_bound": 0.2222222222222222,
+          "tp": 2,
+          "flags": 9,
+          "cases_with_needle_flagged": 1,
+          "share_cases_with_needle_flagged": 0.009615384615384616
+        }
+      ],
+      "table_top5": [
+        {
+          "tau": 0.5,
+          "flags_per_case_mean": 1.75,
+          "flags_per_case_median": 1,
+          "flags_per_case_p90": 4,
+          "share_cases_with_any_flag": 0.7596153846153846,
+          "precision_lower_bound": 0.16483516483516483,
+          "tp": 30,
+          "flags": 182,
+          "cases_with_needle_flagged": 24,
+          "share_cases_with_needle_flagged": 0.23076923076923078
+        },
+        {
+          "tau": 0.9,
+          "flags_per_case_mean": 0.4423076923076923,
+          "flags_per_case_median": 0,
+          "flags_per_case_p90": 2,
+          "share_cases_with_any_flag": 0.27884615384615385,
+          "precision_lower_bound": 0.2391304347826087,
+          "tp": 11,
+          "flags": 46,
+          "cases_with_needle_flagged": 9,
+          "share_cases_with_needle_flagged": 0.08653846153846154
+        },
+        {
+          "tau": 0.99,
+          "flags_per_case_mean": 0.038461538461538464,
+          "flags_per_case_median": 0,
+          "flags_per_case_p90": 0,
+          "share_cases_with_any_flag": 0.019230769230769232,
+          "precision_lower_bound": 0.5,
+          "tp": 2,
+          "flags": 4,
+          "cases_with_needle_flagged": 1,
+          "share_cases_with_needle_flagged": 0.009615384615384616
+        }
+      ],
+      "table_over_prefilter_pool": [
+        {
+          "tau": 0.5,
+          "flags_per_case_mean": 31.26923076923077,
+          "flags_per_case_median": 29,
+          "flags_per_case_p90": 65,
+          "share_cases_with_any_flag": 1,
+          "precision_lower_bound": 0.016912669126691267,
+          "tp": 55,
+          "flags": 3252,
+          "cases_with_needle_flagged": 41,
+          "share_cases_with_needle_flagged": 0.3942307692307692
+        },
+        {
+          "tau": 0.9,
+          "flags_per_case_mean": 2.519230769230769,
+          "flags_per_case_median": 1,
+          "flags_per_case_p90": 7,
+          "share_cases_with_any_flag": 0.7211538461538461,
+          "precision_lower_bound": 0.05725190839694656,
+          "tp": 15,
+          "flags": 262,
+          "cases_with_needle_flagged": 11,
+          "share_cases_with_needle_flagged": 0.10576923076923077
+        },
+        {
+          "tau": 0.99,
+          "flags_per_case_mean": 0.125,
+          "flags_per_case_median": 0,
+          "flags_per_case_p90": 0,
+          "share_cases_with_any_flag": 0.09615384615384616,
+          "precision_lower_bound": 0.15384615384615385,
+          "tp": 2,
+          "flags": 13,
+          "cases_with_needle_flagged": 1,
+          "share_cases_with_needle_flagged": 0.009615384615384616
+        }
+      ],
+      "rule": "highest of {0.5,0.9,0.99} at which >= 25% of cases have a verified needle flagged",
+      "precision_note": "precision is against verified needles only: a lower bound, because a flagged non-needle may be a real violation",
+      "hook_guidance": "at most one feedback item per turn: the flagged item with the highest violation score; precision at the rule-selected tau is low, so the conservative settings (top-5, tau 0.5, or top-20, tau 0.9) are listed in table_top5 / table_top20"
+    }
+  },
+  "prompt_time_query": {
+    "situation": "SITUATION (the owner's latest message, before the agent has acted):\n\nOWNER: <clip(last human message, 1500)>",
+    "items": "strictly before that message",
+    "note": "same pipeline constants; measured on 85 paired cases",
+    "recall5_prompt": 0.29411764705882354,
+    "recall5_stop_same_cases": 0.5176470588235295,
+    "recall5_prompt_embeddings": 0.21176470588235294
+  },
+  "optional_stages_not_selected": {
+    "decisions_choice_rerank_top20": {
+      "question": "Which ONE of these past owner statements is the most important for the assistant to know so that it handles the situation above correctly?",
+      "orders": "forward and reversed fused order, probabilities averaged",
+      "cv_hits5": 42,
+      "note": "no gain at rank 5 (lower hits), better MRR"
+    },
+    "codex_exec_rerank_top20": {
+      "cv_hits5": 51,
+      "wall_p50_s": 10.8095,
+      "note": "best recall of any arm but p50 latency over the 4 s rule; usable only off the hot path"
+    }
+  },
+  "measured": {
+    "live_pack72": {
+      "pack_size": 72,
+      "with_decisions_rerank": false,
+      "cases": 30,
+      "p50_ms": 1075.3347704999978,
+      "p90_ms": 1269.7453663999997,
+      "max_ms": 1392.2934999999998,
+      "embed_p50_ms": 214.18383350000022,
+      "d_p50_ms": 792.3546875000002,
+      "local_p50_ms": 70.55095849999998,
+      "cost_per_query_mean_usd": 0.0043761600000000005,
+      "mean_d_requests": 3.1,
+      "mean_prefilter_size": 201.16666666666666,
+      "answer_mismatches": 0,
+      "answers": 6035,
+      "min_query_cos_vs_stored": 0.9991152093029889
+    },
+    "live_pack200": {
+      "pack_size": 200,
+      "with_decisions_rerank": false,
+      "cases": 30,
+      "p50_ms": 1113.9979585,
+      "p90_ms": 1408.0495465000054,
+      "max_ms": 2339.778833000004,
+      "embed_p50_ms": 172.44202050000013,
+      "d_p50_ms": 858.9103955,
+      "local_p50_ms": 62.2980424999987,
+      "cost_per_query_mean_usd": 0.004324250000000001,
+      "mean_d_requests": 1.5666666666666667,
+      "mean_prefilter_size": 201.16666666666666,
+      "answer_mismatches": 0,
+      "answers": 6035,
+      "min_query_cos_vs_stored": 0.9991152093029889
+    },
+    "live_pack72_with_decisions_rerank": {
+      "pack_size": 72,
+      "with_decisions_rerank": true,
+      "cases": 30,
+      "p50_ms": 1467.3414579999958,
+      "p90_ms": 1780.8633079999997,
+      "max_ms": 2297.4118329999947,
+      "embed_p50_ms": 161.25475000000006,
+      "d_p50_ms": 805.952874999999,
+      "local_p50_ms": 72.08366599999863,
+      "cost_per_query_mean_usd": 0.004697466666666666,
+      "mean_d_requests": 3.1,
+      "mean_prefilter_size": 201.16666666666666,
+      "answer_mismatches": 0,
+      "answers": 6035,
+      "min_query_cos_vs_stored": 0.9991152093029889
+    },
+    "per_query_cost_usd_live": 0.0043761600000000005,
+    "p50_s_live": 1.0753347704999978,
+    "p90_s_live": 1.2697453663999998
+  },
+  "reference_spec": {
+    "query": {
+      "embedding_text_clip": 6000
+    },
+    "prefilter": {
+      "embeddings_top": 150,
+      "bm25_top": 60,
+      "same_thread_top": 30
+    },
+    "d_generic": {
+      "question": "Is this past owner statement important for handling the situation above correctly?",
+      "item_clip": 260,
+      "quote_prefix": "Past owner statement: ",
+      "max_questions_per_request": 200,
+      "pack_size": 72
+    },
+    "fusion": {
+      "type": "rrf",
+      "k": 60,
+      "w_dg": 2,
+      "w_e": 1,
+      "w_b": 1,
+      "w_st": 1,
+      "use_same_thread_list": false
+    },
+    "bm25": {
+      "doc_clip": 4000
+    }
+  }
+}

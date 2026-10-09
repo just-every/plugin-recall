@@ -1,0 +1,11 @@
+{
+  "session_id": "153c3fa5-9dd5-79a1-9b60-f6204a5d553c",
+  "turn_id": "b1d5afb1-84e5-7f54-a902-1933b681fda4",
+  "transcript_path": null,
+  "cwd": "/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad/cwd",
+  "hook_event_name": "Stop",
+  "model": "gpt-6-astra",
+  "permission_mode": "bypassPermissions",
+  "stop_hook_active": false,
+  "last_assistant_message": "pong"
+}

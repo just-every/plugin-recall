@@ -1,0 +1,52 @@
+{
+  "name": "@just-every/plugin-recall",
+  "version": "0.5.1",
+  "description": "Memory plugin for Codex and Claude Code: brings back the small things you said earlier that matter for the request in front of the agent, using embeddings plus cheap narrow Decisions API judgements.",
+  "keywords": [
+    "codex",
+    "claude-code",
+    "memory",
+    "recall",
+    "hooks",
+    "history"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "homepage": "https://github.com/just-every/plugin-recall#readme",
+  "bugs": {
+    "url": "https://github.com/just-every/plugin-recall/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/just-every/plugin-recall.git"
+  },
+  "bin": {
+    "recall": "bin/recall"
+  },
+  "files": [
+    ".codex-plugin/**/*",
+    ".claude-plugin/**/*",
+    ".agents/**/*",
+    "hooks/**/*",
+    "bin/**/*",
+    "scripts/**/*",
+    "skills/**/*",
+    "docs/**/*",
+    "!docs/examples/fleet-config.json",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "prepublishOnly": "npm test",
+    "recall": "node scripts/recall.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.15"
+  }
+}

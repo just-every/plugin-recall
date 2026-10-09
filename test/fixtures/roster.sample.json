@@ -1,0 +1,86 @@
+[
+ {
+  "id": "claude-main",
+  "kind": "claude",
+  "home": "~/.claude",
+  "protected": true,
+  "manual": false
+ },
+ {
+  "id": "claude-work",
+  "kind": "claude",
+  "home": "~/.claude_work",
+  "protected": false,
+  "manual": false
+ },
+ {
+  "id": "claude-side",
+  "kind": "claude",
+  "home": "~/.claude_side",
+  "protected": false,
+  "manual": false
+ },
+ {
+  "id": "claude-team",
+  "kind": "claude",
+  "home": "~/.claude_team",
+  "protected": true,
+  "manual": true
+ },
+ {
+  "id": "codex-main",
+  "kind": "codex",
+  "home": "~/.codex",
+  "protected": true,
+  "manual": true
+ },
+ {
+  "id": "codex-a",
+  "kind": "codex",
+  "home": "~/.codex_a",
+  "protected": true,
+  "manual": true
+ },
+ {
+  "id": "codex-b",
+  "kind": "codex",
+  "home": "~/.codex_b",
+  "protected": true,
+  "manual": true
+ },
+ {
+  "id": "codex-c",
+  "kind": "codex",
+  "home": "~/.codex_c",
+  "protected": true,
+  "manual": true
+ },
+ {
+  "id": "codex-d",
+  "kind": "codex",
+  "home": "~/.codex_d",
+  "protected": true,
+  "manual": true
+ },
+ {
+  "id": "codex-work",
+  "kind": "codex",
+  "home": "~/.codex_work",
+  "protected": false,
+  "manual": false
+ },
+ {
+  "id": "codex-alt",
+  "kind": "codex",
+  "home": "~/.codex_alt",
+  "protected": false,
+  "manual": false
+ },
+ {
+  "id": "codex-spare",
+  "kind": "codex",
+  "home": "~/.codex_spare",
+  "protected": false,
+  "manual": false
+ }
+]

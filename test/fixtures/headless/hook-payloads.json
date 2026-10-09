@@ -1,0 +1,128 @@
+{
+  "_about": "Synthetic hook stdin payloads and hook-process environments, shaped like those recorded from Claude Code 2.1.287 (-p), and Codex 0.160.1 (exec and the interactive TUI). Secrets and long strings are not present.",
+  "claude_p_nested_in_desktop": {
+    "env": {
+      "CLAUDE_CODE_ENTRYPOINT": "claude-desktop",
+      "CLAUDE_CODE_HOST_SESSION_ID": "local_745d0d37-4b7d-46a8-9ce4-f5de6e7020fd",
+      "CLAUDE_CODE_CHILD_SESSION": "1",
+      "AI_AGENT": "claude-code_2-1-287_harness",
+      "CLAUDE_CODE_SESSION_ATTENDED": "0",
+      "CLAUDECODE": "1"
+    },
+    "stdin": {
+      "session_id": "1651f8a6-93c4-443a-9af7-b50758457e2a",
+      "transcript_path": "/home/sam/.claude/projects/-private-tmp-claude-1000--home-sam-projects-billing-api-6ac683e1-2965-4441-8079-21572372aac0-scratchpad-probe/1651f8a6-93c4-443a-9af7-b50758457e2a.jsonl",
+      "cwd": "/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad/probe",
+      "scratchpad_dir": "/private/tmp/claude-1000/-private-tmp-claude-1000--home-sam-projects-billing-api-6ac683e1-2965-4441-8079-21572372aac0-scratchpad-probe/1651f8a6-93c4-443a-9af7-b50758457e2a/scratchpad",
+      "prompt_id": "42b2c677-099e-4be9-9cbb-ccdeccf56a3f",
+      "permission_mode": "default",
+      "hook_event_name": "UserPromptSubmit",
+      "prompt": "Reply with exactly: ok"
+    }
+  },
+  "claude_p_nested_in_desktop_stop": {
+    "env": {
+      "CLAUDE_CODE_ENTRYPOINT": "claude-desktop",
+      "CLAUDE_CODE_HOST_SESSION_ID": "local_745d0d37-4b7d-46a8-9ce4-f5de6e7020fd",
+      "CLAUDE_CODE_CHILD_SESSION": "1",
+      "AI_AGENT": "claude-code_2-1-287_harness",
+      "CLAUDE_CODE_SESSION_ATTENDED": "0",
+      "CLAUDECODE": "1"
+    },
+    "stdin": {
+      "session_id": "1651f8a6-93c4-443a-9af7-b50758457e2a",
+      "transcript_path": "/home/sam/.claude/projects/-private-tmp-claude-1000--home-sam-projects-billing-api-6ac683e1-2965-4441-8079-21572372aac0-scratchpad-probe/1651f8a6-93c4-443a-9af7-b50758457e2a.jsonl",
+      "cwd": "/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad/probe",
+      "scratchpad_dir": "/private/tmp/claude-1000/-private-tmp-claude-1000--home-sam-projects-billing-api-6ac683e1-2965-4441-8079-21572372aac0-scratchpad-probe/1651f8a6-93c4-443a-9af7-b50758457e2a/scratchpad",
+      "prompt_id": "42b2c677-099e-4be9-9cbb-ccdeccf56a3f",
+      "permission_mode": "default",
+      "hook_event_name": "Stop",
+      "stop_hook_active": false,
+      "last_assistant_message": "ok",
+      "background_tasks": [],
+      "session_crons": []
+    }
+  },
+  "codex_exec": {
+    "stdin": {
+      "session_id": "a5ea7021-37db-7669-a980-deff4ee3bb65",
+      "turn_id": "2c32dddf-e6e3-777c-b750-97b83626a720",
+      "transcript_path": "/home/sam/.codex/sessions/2026/10/08/rollout-2026-10-08T08-07-21-a5ea7021-37db-7669-a980-deff4ee3bb65.jsonl",
+      "cwd": "/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad/probe/cwd",
+      "hook_event_name": "UserPromptSubmit",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "prompt": "Reply with the single word pong and nothing else."
+    }
+  },
+  "codex_exec_stop": {
+    "stdin": {
+      "session_id": "a5ea7021-37db-7669-a980-deff4ee3bb65",
+      "turn_id": "2c32dddf-e6e3-777c-b750-97b83626a720",
+      "transcript_path": "/home/sam/.codex/sessions/2026/10/08/rollout-2026-10-08T08-07-21-a5ea7021-37db-7669-a980-deff4ee3bb65.jsonl",
+      "cwd": "/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad/probe/cwd",
+      "hook_event_name": "Stop",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "stop_hook_active": false,
+      "last_assistant_message": "pong"
+    }
+  },
+  "codex_tui": {
+    "stdin": {
+      "session_id": "17247f36-579c-7845-8b68-8254c5e66a86",
+      "turn_id": "511bc5b1-4478-73a0-aa21-506edaa1bad8",
+      "transcript_path": "/home/sam/.codex/sessions/2026/10/08/rollout-2026-10-08T08-11-55-17247f36-579c-7845-8b68-8254c5e66a86.jsonl",
+      "cwd": "/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad/probe/icwd",
+      "hook_event_name": "UserPromptSubmit",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "prompt": "Reply with the single word pong and nothing else."
+    }
+  },
+  "codex_tui_stop": {
+    "stdin": {
+      "session_id": "17247f36-579c-7845-8b68-8254c5e66a86",
+      "turn_id": "511bc5b1-4478-73a0-aa21-506edaa1bad8",
+      "transcript_path": "/home/sam/.codex/sessions/2026/10/08/rollout-2026-10-08T08-11-55-17247f36-579c-7845-8b68-8254c5e66a86.jsonl",
+      "cwd": "/private/tmp/claude-1000/-home-sam-projects-billing-api/6ac683e1-2965-4441-8079-21572372aac0/scratchpad/probe/icwd",
+      "hook_event_name": "Stop",
+      "model": "gpt-6-astra",
+      "permission_mode": "bypassPermissions",
+      "stop_hook_active": false,
+      "last_assistant_message": "pong"
+    }
+  },
+  "codex_memory_agent": {
+    "stdin": {
+      "session_id": "72a0320f-9b17-7353-bf66-489700c6c475",
+      "turn_id": "1381b202-57a5-71ee-abf2-5268823f5cbf",
+      "transcript_path": null,
+      "cwd": "/home/sam/.codex/memories",
+      "hook_event_name": "UserPromptSubmit",
+      "model": "gpt-5.6-terra",
+      "permission_mode": "bypassPermissions",
+      "prompt": "## Memory Writing Agent: Phase 2 (Consolidation)\n\nYou are a Memory Writing Agent.\n\nSynthetic memory-agent prompt for the fixture. [...elided for fixture]"
+    }
+  },
+  "claude_desktop_attended_env": {
+    "_about": "Environment of the tool shell of an attended desktop session; the hook processes of an attended session get the same CLAUDE_CODE_SESSION_ATTENDED from the same function (see docs/hosts.md, automation and headless sessions).",
+    "env": {
+      "CLAUDE_CODE_SESSION_ATTENDED": "1",
+      "CLAUDE_CODE_ENTRYPOINT": "claude-desktop",
+      "CLAUDE_CODE_CHILD_SESSION": "1",
+      "CLAUDECODE": "1",
+      "AI_AGENT": "claude-code_2-1-293_agent"
+    }
+  },
+  "codex_exec_hook_env_inherited_from_claude": {
+    "_about": "Environment of the tool shell of an attended desktop session; the hook processes of an attended session get the same CLAUDE_CODE_SESSION_ATTENDED from the same function (see docs/hosts.md, automation and headless sessions).",
+    "env": {
+      "CLAUDE_CODE_SESSION_ATTENDED": "1",
+      "CLAUDE_CODE_ENTRYPOINT": "claude-desktop",
+      "CLAUDE_CODE_CHILD_SESSION": "1",
+      "CLAUDECODE": "1",
+      "CODEX_HOME": "/home/sam/.codex"
+    }
+  }
+}

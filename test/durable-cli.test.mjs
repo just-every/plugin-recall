@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { tmpDir } from './helpers.mjs';
+import { createQuestionCache, predicateAnswer } from '../scripts/lib/question-cache.mjs';
+import { durableKey, readDurableIndex } from '../scripts/lib/durable-store.mjs';
+import { durableProbabilities } from '../scripts/lib/pipelines/durable.mjs';
+
+test('CLI offline durability index survives cold-cache mode and missing compose typing fails loudly', async () => {
+  const dir = tmpDir('recall-durable-cli');
+  const dataDir = path.join(dir, 'data');
+  const item = { id: 'rule', text: 'Keep focus on the selected tab.', ts: '2026-01-01T00:00:00Z', session_id: 'past', repo: null, host: 'codex' };
+  const corpus = path.join(dir, 'corpus.jsonl');
+  writeFileSync(corpus, `${JSON.stringify(item)}\n`);
+  const cache = createQuestionCache({ dir: dataDir });
+  cache.putKey(durableKey(item), predicateAnswer(.8));
+  cache.close();
+  const env = { PATH: process.env.PATH, HOME: dir, RECALL_DATA: dataDir, RECALL_OPENAI_BASE_URL: 'http://127.0.0.1:1', OPENAI_API_KEY: 'test-unused' };
+  const args = ['scripts/recall.mjs', 'index', '--corpus', corpus, '--durable'];
+  const first = spawnSync(process.execPath, args, { env, encoding: 'utf8' });
+  assert.equal(first.status, 0, first.stderr);
+  assert.equal(JSON.parse(first.stdout).durable.typed, 1);
+  const cold = spawnSync(process.execPath, [...args, '--no-cache'], { env, encoding: 'utf8' });
+  assert.equal(cold.status, 0, cold.stderr);
+  assert.equal(JSON.parse(cold.stdout).durable.typed, 0);
+  const ctx = { memo: {}, eligible: [0], corpus: { items: [item] }, deps: { loadDurable: items => readDurableIndex({ items, dir: dataDir }) } };
+  assert.equal((await durableProbabilities(ctx)).get(0), .8);
+  await assert.rejects(durableProbabilities({ ...ctx, memo: {}, corpus: { items: [{ ...item, text: 'new uncached text' }] } }), /run recall index --durable/);
+});

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Recall Monitor</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="app.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="top-row">
+    <h1 class="brand">Recall <span>Monitor</span></h1>
+    <div id="conn" class="conn" role="status" data-state="connecting"><span class="dot" aria-hidden="true"></span><span class="conn-text">Connecting</span></div>
+    <div id="index" class="index-info"></div>
+  </div>
+  <div class="meters" id="meters"></div>
+</header>
+<div id="banner" class="banner" role="alert" hidden></div>
+<div class="layout">
+  <main>
+    <section id="strip" class="strip" aria-label="Today"></section>
+    <form id="filters" class="filters" aria-label="Filters">
+      <label>Host <select id="f-host"></select></label>
+      <label>Home <select id="f-home"></select></label>
+      <label>Period <select id="f-hours"></select></label>
+      <label class="check"><input type="checkbox" id="f-skips"> Show skipped turns</label>
+      <label class="grow">Search <input type="search" id="f-q" placeholder="Search your queries" autocomplete="off" spellcheck="false"></label>
+    </form>
+    <div id="feed" class="feed" aria-live="polite" aria-label="Turns, newest first"></div>
+    <p id="empty" class="empty" hidden></p>
+  </main>
+  <aside id="side" class="side" aria-label="Summary"></aside>
+</div>
+<aside id="drawer" class="drawer" role="dialog" aria-modal="false" aria-label="Turn details" hidden></aside>
+</body>
+</html>

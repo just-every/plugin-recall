@@ -1,0 +1,15 @@
+{
+  "name": "plugin-recall",
+  "description": "Recall: a memory plugin that brings back the small things you said earlier, for Claude Code and Codex.",
+  "owner": {
+    "name": "Just Every",
+    "url": "https://github.com/just-every"
+  },
+  "plugins": [
+    {
+      "name": "recall",
+      "source": "./",
+      "description": "Brings back the few things you said earlier that matter for this request: prompt-time injection of short typed notes (rule, preference, decision, correction) from your own Claude Code and Codex history."
+    }
+  ]
+}
