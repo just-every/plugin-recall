@@ -9,7 +9,7 @@ import { startFakeServer } from "./helpers.mjs";
 import { claudeState } from "./host-sim.mjs";
 import { KEY, recall, sandboxHome, waitForCards } from "./sandbox.mjs";
 
-const V = "0.5.1";
+const V = "0.5.2";
 
 async function installedHome(server, { claude = [".claude", ".claude_work"], before = () => {} } = {}) {
   const home = sandboxHome({ claude, codex: [".codex", ".codex_work"] });

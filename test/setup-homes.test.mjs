@@ -24,7 +24,7 @@ test("--exclude leaves a home out and records it; a later run keeps it out; --ho
     assert.equal(r.code, 0, r.stdout + r.stderr);
     assert.match(r.stdout, /\n {2}2 {2}~\/\.claude_work {2}Claude Code {2}1 session {2}left out\n/);
     assert.ok(r.stdout.replace(/\n +/g, " ").includes(" To add the left-out homes later: npx -y @just-every/plugin-recall --homes ~/.claude_work,~/.codex_work\n\n"), r.stdout);
-    assert.match(r.stdout, /Install Recall 0\.5\.1 in 2 homes: ~\/\.claude, ~\/\.codex\n/);
+    assert.match(r.stdout, /Install Recall 0\.5\.2 in 2 homes: ~\/\.claude, ~\/\.codex\n/);
     assert.deepEqual(installedIn(clis), [".claude", ".codex"]);
     assert.deepEqual(installs(home), [".claude installed", ".claude_work left-out", ".codex installed", ".codex_work left-out"]);
     assert.deepEqual(JSON.parse(fs.readFileSync(path.join(home, ".plugin-recall", "config.json"), "utf8")), { dailyCapUsd: 1 }, "a left-out home is not added to the homes read");
@@ -33,7 +33,7 @@ test("--exclude leaves a home out and records it; a later run keeps it out; --ho
     clis = fakeClis();
     r = await recall([], { home, clis, env, stdin: "" });
     assert.equal(r.code, 0, r.stdout + r.stderr);
-    assert.match(r.stdout, /~\/\.codex_work {3}Codex {8}1 session {2}left out\n {2}To add the left-out homes later:[\s\S]*Everything is up to date: Recall 0\.5\.1 in 2 homes\./);
+    assert.match(r.stdout, /~\/\.codex_work {3}Codex {8}1 session {2}left out\n {2}To add the left-out homes later:[\s\S]*Everything is up to date: Recall 0\.5\.2 in 2 homes\./);
 
     clis = fakeClis();
     r = await recall(["--homes", "~/.codex_work", "--yes"], { home, clis, env });
@@ -58,7 +58,7 @@ test("typing home numbers at the go-ahead leaves those out, shows the homes and 
     assert.equal(asks, 2, "asked again after a number that names no home, and not again after leaving two out");
     assert.match(r.stdout, /\nLeaving out ~\/\.claude_work, ~\/\.codex_work\.\n\nAgent homes \(4\)\n/);
     assert.match(r.stdout, /\nType y, n, or home numbers such as 2,4\.\n/);
-    assert.match(r.stdout, /\n\nAgent homes \(4\)\n {2}1 {2}~\/\.claude {7}Claude Code {2}1 session {2}new\n {2}2 {2}~\/\.claude_work {2}Claude Code {2}1 session {2}left out\n[\s\S]*\n {2}Install Recall 0\.5\.1 in 2 homes: ~\/\.claude, ~\/\.codex\n/);
+    assert.match(r.stdout, /\n\nAgent homes \(4\)\n {2}1 {2}~\/\.claude {7}Claude Code {2}1 session {2}new\n {2}2 {2}~\/\.claude_work {2}Claude Code {2}1 session {2}left out\n[\s\S]*\n {2}Install Recall 0\.5\.2 in 2 homes: ~\/\.claude, ~\/\.codex\n/);
     assert.deepEqual(installedIn(clis), [".claude", ".codex"]);
     assert.deepEqual(installs(home), [".claude installed", ".claude_work left-out", ".codex installed", ".codex_work left-out"]);
     await waitForCards(path.join(home, ".plugin-recall"));
@@ -75,7 +75,7 @@ test("a default home left out is still read for memory, and says so; leaving eve
     const r = await recall([], { home, clis: fakeClis(), stdin: "2\n", env: { OPENAI_API_KEY: KEY, RECALL_OPENAI_BASE_URL: server.url } });
     assert.equal(r.code, 0, r.stdout + r.stderr);
     assert.ok(r.stdout.includes("\n  2  ~/.codex   Codex        1 session  left out; still read for memory\n  To add the left-out home later: npx -y @just-every/plugin-recall --homes ~/.codex\n"), r.stdout);
-    assert.match(r.stdout, /\n {2}Install Recall 0\.5\.1 in 1 home: ~\/\.claude\n/);
+    assert.match(r.stdout, /\n {2}Install Recall 0\.5\.2 in 1 home: ~\/\.claude\n/);
     await waitForCards(path.join(home, ".plugin-recall"));
     const none = await recall([], { home: all, clis: fakeClis(), stdin: "1,2\n", env: { OPENAI_API_KEY: KEY, RECALL_OPENAI_BASE_URL: server.url } });
     assert.equal(none.code, 0);

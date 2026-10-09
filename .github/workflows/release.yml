@@ -13,18 +13,39 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test:
+    name: Test (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['22', '24']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Test
+        run: npm test
+
   release:
     name: Publish @just-every/plugin-recall
+    needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: https://registry.npmjs.org
 
       - name: Is this version already on npm?
@@ -39,9 +60,6 @@ jobs:
           else
             echo "publish=true" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Test
-        run: npm test
 
       - name: Verify package contents
         if: steps.check.outputs.publish == 'true'

@@ -93,7 +93,7 @@ test("setup: an invalid config.json stops it before anything else, naming the fi
   fs.writeFileSync(path.join(home, ".plugin-recall", "config.json"), '{"dailyCapUSD": 5}');
   const r = await recall(["--yes"], { home, env: { OPENAI_API_KEY: "sk-test" }, clis: fakeClis() });
   assert.equal(r.code, 1);
-  assert.match(r.stdout, /^Recall 0\.5\.1 · memory for Claude Code and Codex\n\n~\/\.plugin-recall\/config\.json is invalid: unknown key "dailyCapUSD" /);
+  assert.match(r.stdout, /^Recall 0\.5\.2 · memory for Claude Code and Codex\n\n~\/\.plugin-recall\/config\.json is invalid: unknown key "dailyCapUSD" /);
   assert.match(r.stdout, /\. Fix it, then run this again\.\nNothing was changed\.\n$/);
 });
 

@@ -2,4 +2,5 @@
 // `recall` on the Claude Code plugin PATH (bin/) and for npm's bin field.
 // A node file rather than a shell wrapper: npm links bin files as symlinks, and Node resolves a symlinked entry
 // to its real path, so this import finds scripts/recall.mjs wherever the package is installed.
+import "../scripts/lib/quiet-sqlite-warning.mjs"; // first, so the SQLite ExperimentalWarning on Node 22 is dropped before anything loads node:sqlite
 import "../scripts/recall.mjs";

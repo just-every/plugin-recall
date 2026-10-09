@@ -9,7 +9,7 @@ import { fakeClis } from "./fake-cli.mjs";
 import { readFixture, startFakeServer } from "./helpers.mjs";
 import { addClaudeHome, KEY, packageAtVersion, recall, sandboxHome, snapshot, STATEMENTS, waitForCards } from "./sandbox.mjs";
 
-const V = "0.5.1";
+const V = "0.5.2";
 const plugins = (clis) => clis.log().filter((c) => c.args[0] === "plugin").map((c) => `${c.bin} ${c.args.join(" ")}`);
 const probesOnly = (clis) => assert.ok(clis.log().every((c) => ["--version", "auth", "login"].includes(c.args[0])), JSON.stringify(clis.log().map((c) => c.args)));
 
@@ -45,15 +45,15 @@ test("a newer release run over an install updates every home in place and keeps 
   const server = await startFakeServer();
   try {
     const home = await installed(server);
-    const newer = packageAtVersion("0.5.2");
+    const newer = packageAtVersion("0.5.3");
     const clis = fakeClis();
     const r = await recall(["--yes"], { home, clis, env: { RECALL_OPENAI_BASE_URL: server.url }, script: path.join(newer, "scripts", "recall.mjs") });
     assert.equal(r.code, 0, r.stdout + r.stderr);
-    assert.match(r.stdout, /~\/\.claude {7}Claude Code {2}1 session {2}update 0\.5\.1 → 0\.5\.2\n/);
-    assert.match(r.stdout, /\nPlan\n {2}Update Recall to 0\.5\.2 in 4 homes\n {2}Use your OpenAI key from ~\/\.env \(sk-\.\.\.0001\)\n {2}Index: 6 statements, kept up to date as you work\n/);
+    assert.match(r.stdout, /~\/\.claude {7}Claude Code {2}1 session {2}update 0\.5\.2 → 0\.5\.3\n/);
+    assert.match(r.stdout, /\nPlan\n {2}Update Recall to 0\.5\.3 in 4 homes\n {2}Use your OpenAI key from ~\/\.env \(sk-\.\.\.0001\)\n {2}Index: 6 statements, kept up to date as you work\n/);
     assert.ok(!r.stdout.includes("Install Recall"), "every home is an update");
     assert.match(r.stdout, /Update the recall command: ~\/\.local\/bin\/recall\n/);
-    assert.match(r.stdout, /✓ ~\/\.codex_work {3}Codex {8}updated 0\.5\.1 → 0\.5\.2 · approve Recall once in its Hooks page\n/);
+    assert.match(r.stdout, /✓ ~\/\.codex_work {3}Codex {8}updated 0\.5\.2 → 0\.5\.3 · approve Recall once in its Hooks page\n/);
     const M = path.join(home, ".plugin-recall", "marketplace");
     const claudeHome = (c) => c.claudeConfigDir ?? "default";
     for (const h of ["default", path.join(home, ".claude_work")]) {
@@ -61,9 +61,9 @@ test("a newer release run over an install updates every home in place and keeps 
         ["plugin marketplace update plugin-recall --json", "plugin update recall@plugin-recall --json"], h);
     }
     assert.deepEqual(plugins(clis).filter((l) => l.startsWith("codex")), ["codex plugin add recall@plugin-recall --json", "codex plugin add recall@plugin-recall --json"]);
-    assert.deepEqual(fs.readdirSync(path.join(M, "plugins")).sort(), ["recall-0.5.1", "recall-0.5.2"]);
-    assert.equal(fs.readlinkSync(path.join(home, ".local", "bin", "recall")), path.join(M, "plugins", "recall-0.5.2", "bin", "recall"));
-    assert.equal(JSON.parse(fs.readFileSync(path.join(M, ".claude-plugin", "marketplace.json"), "utf8")).plugins[0].source, "./plugins/recall-0.5.2");
+    assert.deepEqual(fs.readdirSync(path.join(M, "plugins")).sort(), ["recall-0.5.2", "recall-0.5.3"]);
+    assert.equal(fs.readlinkSync(path.join(home, ".local", "bin", "recall")), path.join(M, "plugins", "recall-0.5.3", "bin", "recall"));
+    assert.equal(JSON.parse(fs.readFileSync(path.join(M, ".claude-plugin", "marketplace.json"), "utf8")).plugins[0].source, "./plugins/recall-0.5.3");
     assert.equal(server.calls.filter((c) => c.pathname === "/v1/decisions").length, 1, "access was proven once, at the first install");
   } finally {
     await server.close();
@@ -78,15 +78,15 @@ test("a re-run whose only work is Recall's own copy says so in the plan: restore
     fs.rmSync(path.join(M, ".claude-plugin", "marketplace.json"));
     let r = await recall(["--yes"], { home, clis: fakeClis(), env: { RECALL_OPENAI_BASE_URL: server.url } });
     assert.equal(r.code, 0, r.stdout + r.stderr);
-    assert.match(r.stdout, /\nPlan\n {2}Restore Recall 0\.5\.1's copy in ~\/\.plugin-recall\/marketplace, which the homes load it from\n/);
+    assert.match(r.stdout, /\nPlan\n {2}Restore Recall 0\.5\.2's copy in ~\/\.plugin-recall\/marketplace, which the homes load it from\n/);
     assert.ok(fs.existsSync(path.join(M, ".claude-plugin", "marketplace.json")));
     fs.appendFileSync(path.join(M, "plugins", `recall-${V}`, "README.md"), "\nchanged\n");
     r = await recall(["--yes"], { home, clis: fakeClis(), env: { RECALL_OPENAI_BASE_URL: server.url } });
     assert.equal(r.code, 0, r.stdout + r.stderr);
-    assert.match(r.stdout, /\nPlan\n {2}Copy Recall 0\.5\.1 again into ~\/\.plugin-recall\/marketplace: the copy there has other files\n/);
-    assert.match(r.stdout, /\n {2}! Recall 0\.5\.1 was copied again with different files;/);
+    assert.match(r.stdout, /\nPlan\n {2}Copy Recall 0\.5\.2 again into ~\/\.plugin-recall\/marketplace: the copy there has other files\n/);
+    assert.match(r.stdout, /\n {2}! Recall 0\.5\.2 was copied again with different files;/);
     r = await recall([], { home, clis: fakeClis(), env: { RECALL_OPENAI_BASE_URL: server.url } });
-    assert.match(r.stdout, /\n\nEverything is up to date: Recall 0\.5\.1 in 4 homes\.\n/);
+    assert.match(r.stdout, /\n\nEverything is up to date: Recall 0\.5\.2 in 4 homes\.\n/);
   } finally {
     await server.close();
   }
@@ -100,7 +100,7 @@ test("--dry-run: the plan and nothing else; no request, no host command, no file
   const r = await recall(["--dry-run"], { home, clis, env: { RECALL_OPENAI_BASE_URL: "http://127.0.0.1:1" } });
   assert.equal(r.code, 0, r.stdout + r.stderr);
   assert.match(r.stdout, /\n {2}Found a key in ~\/\.env \(sk-\.\.\.0001\)\.\n {2}· Not checked \(--dry-run\)\.\n/);
-  assert.match(r.stdout, /\nPlan\n {2}Install Recall 0\.5\.1 in 2 homes: ~\/\.claude, ~\/\.codex\n/);
+  assert.match(r.stdout, /\nPlan\n {2}Install Recall 0\.5\.2 in 2 homes: ~\/\.claude, ~\/\.codex\n/);
   assert.match(r.stdout, /What leaves this machine/);
   assert.ok(r.stdout.endsWith("\nDry run: nothing was changed.\n"), r.stdout);
   assert.ok(!r.stdout.includes("Go ahead?"));
@@ -113,9 +113,9 @@ test("a newer release with a new home next to installed ones: one line installs,
   try {
     const home = await installed(server);
     addClaudeHome(home, ".claude_new");
-    const r = await recall(["--dry-run"], { home, clis: fakeClis(), env: { RECALL_OPENAI_BASE_URL: server.url }, script: path.join(packageAtVersion("0.5.2"), "scripts", "recall.mjs") });
+    const r = await recall(["--dry-run"], { home, clis: fakeClis(), env: { RECALL_OPENAI_BASE_URL: server.url }, script: path.join(packageAtVersion("0.5.3"), "scripts", "recall.mjs") });
     assert.equal(r.code, 0, r.stdout + r.stderr);
-    assert.match(r.stdout, /\nPlan\n {2}Install Recall 0\.5\.2 in 1 home: ~\/\.claude_new\n {2}Update Recall to 0\.5\.2 in 4 homes\n/);
+    assert.match(r.stdout, /\nPlan\n {2}Install Recall 0\.5\.3 in 1 home: ~\/\.claude_new\n {2}Update Recall to 0\.5\.3 in 4 homes\n/);
   } finally {
     await server.close();
   }

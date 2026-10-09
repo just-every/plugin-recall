@@ -9,7 +9,7 @@ import { failureReason, mapLimit, run } from "../scripts/onboarding/hosts/runner
 import { tmpDir } from "./helpers.mjs";
 import { codexState, ID, scriptedRunner } from "./host-sim.mjs";
 
-const V = "0.5.1";
+const V = "0.5.2";
 const setup = () => {
   const homeDir = tmpDir("recall-host-codex");
   return { homeDir, M: path.join(homeDir, ".plugin-recall", "marketplace") };
@@ -41,10 +41,10 @@ test("new home: marketplace add, plugin add; a missing ~/.codex is created 0700 
 test("each status runs its own commands; a marketplace from another source is removed before it is added again", async () => {
   const cases = [
     ["current", { version: V, marketplace: "M" }, [], "up to date"],
-    ["update", { version: "0.4.0", marketplace: "M" }, [`plugin add ${ID} --json`], "updated 0.4.0 → 0.5.1"],
+    ["update", { version: "0.4.0", marketplace: "M" }, [`plugin add ${ID} --json`], "updated 0.4.0 → 0.5.2"],
     ["disabled", { version: V, marketplace: "M", enabled: false }, [`plugin add ${ID} --json`], "enabled"],
     ["reinstall", { version: V, marketplace: "/checkout/plugin-recall" }, ["plugin marketplace remove plugin-recall --json", "plugin marketplace add M --json"], "installed"],
-    ["update", { version: "0.4.0", marketplace: "/checkout/plugin-recall" }, ["plugin marketplace remove plugin-recall --json", "plugin marketplace add M --json", `plugin add ${ID} --json`], "updated 0.4.0 → 0.5.1"],
+    ["update", { version: "0.4.0", marketplace: "/checkout/plugin-recall" }, ["plugin marketplace remove plugin-recall --json", "plugin marketplace add M --json", `plugin add ${ID} --json`], "updated 0.4.0 → 0.5.2"],
   ];
   for (const [kind, state, expected, outcome] of cases) {
     const { homeDir, M } = setup();
@@ -77,7 +77,7 @@ test("another copy ([plugins.\"recall@<other>\"]) is left alone", () => {
 test("verify: success without the cache for this version fails the home; failures stay in their home", async () => {
   const { homeDir, M } = setup();
   const noop = await install(homeDir, M, row(homeDir, ".codex_x"), () => ({ stdout: "{}" }));
-  assert.equal(noop.result.reason, "the codex CLI reported success, but ~/.codex_x does not list Recall 0.5.1");
+  assert.equal(noop.result.reason, "the codex CLI reported success, but ~/.codex_x does not list Recall 0.5.2");
   const rows = [row(homeDir, ".codex_a"), row(homeDir, ".codex_b"), row(homeDir, ".codex_c")];
   for (const r of rows) fs.mkdirSync(r.home, { recursive: true });
   const runner = scriptedRunner({ homeDir, V, script: (c) => (c.env.CODEX_HOME.endsWith(".codex_a") && c.args[1] === "add" ? { exitCode: 1, stderr: "WARNING: Refusing to create helper binaries under temporary dir\nError: marketplace 'plugin-recall' is not added\n" } : null) });

@@ -61,12 +61,12 @@ test("npm pack lists no private file, and every packed file passes the same scan
   for (const must of ["LICENSE", "CHANGELOG.md", "README.md", "skills/recall/SKILL.md", "docs/hosts.md", "docs/evidence.md"]) assert.ok(packed.includes(must), must);
 });
 
-test("the version is 0.5.1 everywhere and the changelog has its entry", () => {
+test("the version is 0.5.2 everywhere and the changelog has its entry", () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8"));
-  assert.equal(pkg.version, "0.5.1");
-  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, ".claude-plugin/plugin.json"), "utf8")).version, "0.5.1");
-  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, ".codex-plugin/plugin.json"), "utf8")).version, "0.5.1");
-  assert.match(fs.readFileSync(path.join(ROOT, "CHANGELOG.md"), "utf8"), /^## 0\.5\.1$/m);
+  assert.equal(pkg.version, "0.5.2");
+  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, ".claude-plugin/plugin.json"), "utf8")).version, "0.5.2");
+  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, ".codex-plugin/plugin.json"), "utf8")).version, "0.5.2");
+  assert.match(fs.readFileSync(path.join(ROOT, "CHANGELOG.md"), "utf8"), /^## 0\.5\.2$/m);
   assert.match(fs.readFileSync(path.join(ROOT, "LICENSE"), "utf8"), /^MIT License/);
   assert.equal(pkg.license, "MIT");
 });

@@ -32,5 +32,5 @@ test("the packed tarball installs with npm install -g and runs as `recall`", nee
   assert.ok(fs.lstatSync(bin).isSymbolicLink(), "npm links the bin file");
   assert.match(run(bin, ["pipelines"], dir), /^default\+rerank$/m);
   const doctor = (() => { try { return run(bin, ["doctor"], dir); } catch (e) { return e.stdout; } })();
-  assert.match(doctor, /plugin-recall 0\.5\.1/);
+  assert.match(doctor, /plugin-recall 0\.5\.2/);
 });

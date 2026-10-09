@@ -1,6 +1,6 @@
 {
   "name": "@just-every/plugin-recall",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Memory plugin for Codex and Claude Code: brings back the small things you said earlier that matter for the request in front of the agent, using embeddings plus cheap narrow Decisions API judgements.",
   "keywords": [
     "codex",

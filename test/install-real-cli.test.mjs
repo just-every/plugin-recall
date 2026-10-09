@@ -21,12 +21,12 @@ test("the real host CLIs: install into two homes of each, re-run (up to date), u
   const server = await startFakeServer();
   const home = sandboxHome({ claude: [".claude", ".claude_work"], codex: [".codex", ".codex_work"] });
   const clis = fakeClis({ real });
-  const V = "0.5.1";
+  const V = "0.5.2";
   const rows = [[".claude", "claude"], [".claude_work", "claude"], [".codex", "codex"], [".codex_work", "codex"]].map(([n, host]) => ({ host, home: path.join(home, n) }));
   try {
     const first = await recall(["--yes"], { home, clis, env: { OPENAI_API_KEY: KEY, RECALL_OPENAI_BASE_URL: server.url } });
     assert.equal(first.code, 0, first.stdout + first.stderr);
-    assert.match(first.stdout, /Done\. Recall 0\.5\.1 is on in 4 homes\./);
+    assert.match(first.stdout, /Done\. Recall 0\.5\.2 is on in 4 homes\./);
     const M = path.join(home, ".plugin-recall", "marketplace");
     for (const r of rows) {
       const s = readHomeState(r, V);
@@ -37,7 +37,7 @@ test("the real host CLIs: install into two homes of each, re-run (up to date), u
 
     const again = await recall([], { home, clis, stdin: "", env: { RECALL_OPENAI_BASE_URL: server.url } });
     assert.equal(again.code, 0, again.stdout + again.stderr);
-    assert.match(again.stdout, /Everything is up to date: Recall 0\.5\.1 in 4 homes\./);
+    assert.match(again.stdout, /Everything is up to date: Recall 0\.5\.2 in 4 homes\./);
 
     const gone = await recall(["uninstall", "--yes"], { home, clis });
     assert.equal(gone.code, 0, gone.stdout + gone.stderr);

@@ -8,7 +8,7 @@ import { hostEnv, mapLimit } from "../scripts/onboarding/hosts/runner.mjs";
 import { tmpDir } from "./helpers.mjs";
 import { claudeState, ID, scriptedRunner } from "./host-sim.mjs";
 
-const V = "0.5.1";
+const V = "0.5.2";
 const setup = () => {
   const homeDir = tmpDir("recall-host-claude");
   return { homeDir, M: path.join(homeDir, ".plugin-recall", "marketplace") };
@@ -39,7 +39,7 @@ test("new home: add the marketplace, install; verified from installed_plugins.js
 test("each status runs its own commands: up to date none, update, reinstall from this copy, disabled", async () => {
   const cases = [
     ["current", { version: V, marketplace: "M" }, [], "up to date"],
-    ["update", { version: "0.4.0", marketplace: "M" }, ["plugin marketplace update plugin-recall --json", `plugin update ${ID} --json`], "updated 0.4.0 → 0.5.1"],
+    ["update", { version: "0.4.0", marketplace: "M" }, ["plugin marketplace update plugin-recall --json", `plugin update ${ID} --json`], "updated 0.4.0 → 0.5.2"],
     ["reinstall", { version: V, marketplace: "/checkout/plugin-recall" }, ["plugin marketplace add M --json", "plugin marketplace update plugin-recall --json", `plugin update ${ID} --json`], "installed"],
     ["disabled", { version: V, marketplace: "M", enabled: false }, [`plugin install ${ID} --json`], "enabled"],
   ];
@@ -57,8 +57,8 @@ test("each status runs its own commands: up to date none, update, reinstall from
 test("statusText: the words of the homes table", () => {
   assert.equal(statusText({ kind: "new" }, V), "new");
   assert.equal(statusText({ kind: "current" }, V), "up to date");
-  assert.equal(statusText({ kind: "update", old: "0.4.0" }, V), "update 0.4.0 → 0.5.1");
-  assert.equal(statusText({ kind: "reinstall" }, V), "reinstall 0.5.1 from this copy");
+  assert.equal(statusText({ kind: "update", old: "0.4.0" }, V), "update 0.4.0 → 0.5.2");
+  assert.equal(statusText({ kind: "reinstall" }, V), "reinstall 0.5.2 from this copy");
   assert.equal(statusText({ kind: "disabled" }, V), "disabled; will be enabled");
   assert.equal(statusText({ kind: "other", id: "recall@other-market" }, V), "has recall@other-market; left alone");
 });
@@ -96,7 +96,7 @@ test("a command that fails, times out, or succeeds without the state to show for
   const slow = await install(homeDir, M, row(homeDir, ".claude_b"), () => ({ exitCode: null, timedOut: true }));
   assert.equal(slow.result.reason, "timed out after 60 s");
   const noop = await install(homeDir, M, row(homeDir, ".claude_c"), () => ({ stdout: '{"outcome":"ok"}' }));
-  assert.equal(noop.result.reason, "the claude CLI reported success, but ~/.claude_c does not list Recall 0.5.1");
+  assert.equal(noop.result.reason, "the claude CLI reported success, but ~/.claude_c does not list Recall 0.5.2");
   const notOk = await install(homeDir, M, row(homeDir, ".claude_d"), () => ({ stdout: '{"outcome":"warning","message":"nothing to do"}' }));
   assert.equal(notOk.result.ok, false, "exit 0 without outcome ok is not success");
 });

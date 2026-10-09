@@ -6,7 +6,7 @@ import { nodeOk, shortVersion } from "../scripts/onboarding/detect.mjs";
 import { fakeClis } from "./fake-cli.mjs";
 import { KEY, recall, sandboxHome } from "./sandbox.mjs";
 
-const V = "0.5.1";
+const V = "0.5.2";
 
 test("--help (alone, after setup's options, or `recall help`) prints the setup help itself, every hint in the npx form; help --all the full list", async () => {
   const home = sandboxHome();

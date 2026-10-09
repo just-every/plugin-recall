@@ -18,6 +18,7 @@
 //   recall eval --corpus <jsonl> --cases <jsonl> --pipeline <name> --out <jsonl> [--cards <jsonl>] [--inject-out <jsonl>] [--hub-history <jsonl>] [--v1|--v2] [--embedding-store dir] [--concurrency n] [--limit n] [--no-cache]
 //   recall pipelines                                            the named pipelines
 // Data lives in RECALL_DATA (default: ~/.plugin-recall, shared by every home and host). See README.md for every setting.
+import "./lib/quiet-sqlite-warning.mjs"; // first: drops Node 22's SQLite ExperimentalWarning before node:sqlite can load
 import fs from "node:fs";
 import path from "node:path";
 import { attachCards } from "./lib/cards/eligibility.mjs";

@@ -24,7 +24,7 @@ test("a key in ~/.env is reused: found, checked for free, no question about it, 
     const r = await recall([], { home, clis: fakeClis(), stdin: "y\n", env: { RECALL_OPENAI_BASE_URL: server.url } });
     assert.equal(r.code, 0, r.stdout + r.stderr);
     assert.match(r.stdout, /\n {2}Found a key in ~\/\.env \(sk-\.\.\.0001\)\.\n {2}✓ Accepted by OpenAI \(free check, no tokens billed\)\.\n\nPlan\n/);
-    assert.match(r.stdout, /\nPlan\n {2}Install Recall 0\.5\.1 in 2 homes: ~\/\.claude, ~\/\.codex\n {2}Use your OpenAI key from ~\/\.env \(sk-\.\.\.0001\)\n/);
+    assert.match(r.stdout, /\nPlan\n {2}Install Recall 0\.5\.2 in 2 homes: ~\/\.claude, ~\/\.codex\n {2}Use your OpenAI key from ~\/\.env \(sk-\.\.\.0001\)\n/);
     assert.ok(!r.stdout.includes("Save your OpenAI key") && !r.stdout.includes("[Y/n] \n  "), "the go-ahead is the only question");
     assert.equal((r.stdout.match(/\[Y\/n/g) ?? []).length, 1, r.stdout);
     assert.equal(fs.readFileSync(path.join(home, ".env"), "utf8"), `export OPENAI_API_KEY="${KEY}"\n`);
@@ -120,7 +120,7 @@ test("saving the key: a key that replaces another in ~/.env is shown in the plan
     r = await recall([], { home, clis: fakeClis(), env: { OPENAI_API_KEY: KEY, RECALL_OPENAI_BASE_URL: server.url } });
     assert.equal(r.code, 0, r.stdout + r.stderr);
     assert.match(r.stdout, /\n {2}! Not in ~\/\.env: desktop apps do not pass your shell environment to hooks,\n/);
-    assert.match(r.stdout, /\n\nEverything is up to date: Recall 0\.5\.1 in 2 homes\.\n/);
+    assert.match(r.stdout, /\n\nEverything is up to date: Recall 0\.5\.2 in 2 homes\.\n/);
     assert.ok(!fs.existsSync(path.join(home, ".env")));
 
     // with no key in the environment, --no-save-key cannot work: it stops before asking for one

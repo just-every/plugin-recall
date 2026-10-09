@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // UserPromptSubmit hook entry (Claude Code, Codex, Every Code). Fails open: any error prints {"continue":true} after logging it.
+import "./lib/quiet-sqlite-warning.mjs"; // first: drops Node 22's SQLite ExperimentalWarning before node:sqlite can load
 import { loadConfig } from "./lib/config.mjs";
 import { isConfigError, logConfigFailure } from "./lib/config-error.mjs";
 import { finish, parseHookInput, promptOutput, readStdin } from "./lib/hook-io.mjs";

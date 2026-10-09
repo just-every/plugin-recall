@@ -8,7 +8,7 @@ import { fakeClis } from "./fake-cli.mjs";
 import { startFakeServer } from "./helpers.mjs";
 import { KEY, readJsonl, recall, sandboxHome, waitForCards } from "./sandbox.mjs";
 
-const V = "0.5.1";
+const V = "0.5.2";
 const plugin = (clis) => clis.log().filter((c) => c.args[0] === "plugin");
 const clean = (r) => {
   assert.ok(!/\x1b\[/.test(r.stdout + r.stderr), "no ANSI escape off a terminal");

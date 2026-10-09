@@ -1,6 +1,6 @@
 {
   "name": "recall",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Brings back the few things you said earlier that matter for this request: prompt-time injection of short typed notes (rule, preference, decision, correction), mined from your own Codex and Claude Code history.",
   "author": {
     "name": "Just Every",

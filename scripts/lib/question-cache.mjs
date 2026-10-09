@@ -2,7 +2,7 @@
 import { createHash } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import path from "node:path";
-import { DatabaseSync } from "node:sqlite";
+import { openDatabase } from "./sqlite.mjs";
 
 export const predicateKey = (input, instructions) => createHash("sha256").update(input).update("\u0000").update(instructions).digest("hex").slice(0, 32);
 export function questionKey(input, question) {
@@ -22,7 +22,7 @@ export function createQuestionCache({ dir, enabled = true }) {
   function open() {
     if (db) return;
     mkdirSync(dir, { recursive: true });
-    db = new DatabaseSync(path.join(dir, "question-cache.sqlite"));
+    db = openDatabase(path.join(dir, "question-cache.sqlite"));
     db.exec("PRAGMA busy_timeout=30000; PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS answers (key TEXT PRIMARY KEY, answer TEXT NOT NULL, provenance TEXT) WITHOUT ROWID");
     select = db.prepare("SELECT answer, provenance FROM answers WHERE key = ?");
     insert = db.prepare("INSERT OR IGNORE INTO answers(key, answer, provenance) VALUES (?, ?, ?)");

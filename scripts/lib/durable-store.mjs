@@ -1,7 +1,7 @@
 // The durable feature is an offline index, retained even for cold query-cache runs.
 import { mkdirSync } from 'node:fs';
 import path from 'node:path';
-import { DatabaseSync } from 'node:sqlite';
+import { openDatabase } from './sqlite.mjs';
 import { predicateKey } from './question-cache.mjs';
 
 export const DURABILITY_TEXT = 'Is this a standing rule, preference, or constraint that the owner would want applied to future work, rather than a one-off instruction about the immediate task?';
@@ -10,7 +10,7 @@ export const durableKey = item => predicateKey(item.text.slice(0, DURABILITY_CLI
 
 export function createDurableStore({ dir }) {
   mkdirSync(dir, { recursive: true });
-  const db = new DatabaseSync(path.join(dir, 'durable.sqlite'));
+  const db = openDatabase(path.join(dir, 'durable.sqlite'));
   db.exec('PRAGMA busy_timeout=30000; PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS durable (key TEXT PRIMARY KEY, p REAL) WITHOUT ROWID');
   const get = db.prepare('SELECT p FROM durable WHERE key = ?');
   const put = db.prepare('INSERT INTO durable(key,p) VALUES (?,?) ON CONFLICT(key) DO NOTHING');

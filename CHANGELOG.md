@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.2
+
+### Fixed
+- On Node 22 every `recall` command and every hook run printed `ExperimentalWarning: SQLite is an experimental feature and might change at any time` to stderr (Node 24 and later do not). That one warning is now dropped, by a tiny module (`scripts/lib/quiet-sqlite-warning.mjs`) that `bin/recall`, `scripts/recall.mjs` and `scripts/user-prompt-submit.mjs` import first, before anything can load `node:sqlite`. Every other warning, including other ExperimentalWarnings, is still printed. `node:sqlite` itself now loads only when a database is first opened (`scripts/lib/sqlite.mjs`), so `--version`, help and a disabled hook never load it. The Node requirement is unchanged (22.15 or newer).
+
+### Changed
+- CI runs the tests on Node 22 and Node 24 before publishing.
+
 ## 0.5.1
 
 ### Fixed
