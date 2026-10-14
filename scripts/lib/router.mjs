@@ -3,7 +3,7 @@
 // Default (no roster, no usageCmd): the worker runs under the CURRENT HOST's own home: `claude -p --model haiku` under $CLAUDE_CONFIG_DIR
 // (else ~/.claude), `codex exec` under $CODEX_HOME (else ~/.codex). Nothing else is asked of the machine: no usage command is needed.
 // Optional, for people who run several accounts:
-//   usageCmd      a command that prints usage as JSON (`<cmd> --json`, shape in README "Home routing"). The candidate homes are then every
+//   usageCmd      a command that prints usage as JSON (`<cmd> --json`, shape in docs/reference.md "Many accounts and agent fleets"). The candidate homes are then every
 //                 discovered home of the kind (homes.mjs); one whose usage row is missing, errored, needs auth or is at usageMaxPercent or
 //                 more is dropped, and the one with the most headroom is used (usage is cached for usageTtlMs).
 //   homesRoster   a roster file (roster.mjs): the candidates are its entries with protected:false AND manual:false, and usage is required.

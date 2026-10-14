@@ -71,10 +71,10 @@ test("recall monitor: --host must be loopback; a bad --port is an error; a taken
   }
 });
 
-test("recall monitor appears in the usage text and the README documents it", async () => {
+test("recall monitor appears in the usage text and the reference documents it", async () => {
   const usage = await finished(spawn(process.execPath, [RECALL, "help", "--all"], { stdio: ["ignore", "pipe", "pipe"] }));
   assert.match(usage.out, /recall monitor \[--port 4777\] \[--host 127\.0\.0\.1\]/);
-  const readme = fs.readFileSync(path.join(path.dirname(RECALL), "..", "README.md"), "utf8");
-  assert.match(readme, /^## Monitor$/m);
-  assert.match(readme, /recall monitor --port 4800/);
+  const reference = fs.readFileSync(path.join(path.dirname(RECALL), "..", "docs", "reference.md"), "utf8");
+  assert.match(reference, /^## Monitor$/m);
+  assert.match(reference, /recall monitor --port 4800/);
 });

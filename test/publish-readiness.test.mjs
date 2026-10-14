@@ -15,6 +15,16 @@ const tracked = () => {
   return names.filter((n) => fs.existsSync(path.join(ROOT, n)));
 };
 
+// Binary files (images, video, audio, fonts, archives) are not text: compressed bytes can spell a term by chance. A file is binary when it holds a
+// NUL byte or is not valid UTF-8; every text file is scanned. The names of binary files are still scanned, and the skipped ones are listed.
+const decoder = new TextDecoder("utf-8", { fatal: true });
+const readText = (file) => {
+  const buf = fs.readFileSync(path.join(ROOT, file));
+  if (buf.includes(0)) return null;
+  try { return decoder.decode(buf); } catch { return null; }
+};
+const skipped = [];
+
 // Nothing from a personal machine may ship: an absolute macOS home path is always refused. A maintainer's own names, companies, homes
 // and project words are not listed here (this file is public): put them, as regular-expression sources, in a JSON array outside the
 // repository and point RECALL_PRIVATE_TERMS at it before a release; they are then matched case-insensitively too.
@@ -31,15 +41,16 @@ test("no tracked file or file name carries an owner-specific string", () => {
   const hits = [];
   for (const file of tracked()) {
     if (file === "test/publish-readiness.test.mjs") continue;
-    const content = fs.readFileSync(path.join(ROOT, file), "utf8");
+    const content = readText(file);
     const scan = (label, text) => {
       for (const re of ALWAYS) if (re.test(text)) hits.push(`${file} (${label}): ${re}`);
       if (/just-every/i.test(text.replace(PUBLISHER, ""))) hits.push(`${file} (${label}): just-every outside the publisher's repository path`);
       if (!FLEET_FILES.has(file)) for (const re of FLEET_WORDS) if (re.test(text)) hits.push(`${file} (${label}): ${re}`);
     };
-    scan("content", content);
+    if (content === null) skipped.push(file); else scan("content", content);
     scan("name", file);
   }
+  if (skipped.length) console.log(`# binary files not text-scanned (names still scanned): ${skipped.join(", ")}`);
   assert.deepEqual(hits, [], `owner-specific strings reappeared:\n${hits.join("\n")}`);
 });
 
@@ -55,8 +66,8 @@ test("npm pack lists no private file, and every packed file passes the same scan
   const packed = JSON.parse(npm(["pack", "--dry-run", "--json"], { cwd: ROOT }))[0].files.map((f) => f.path);
   for (const f of packed) {
     assert.ok(!/^(test|evidence)\//.test(f) && !f.includes("node_modules") && !/(^|\/)\.env/.test(f) && !/\.(tgz|log)$/.test(f), `private-looking file packed: ${f}`);
-    const text = fs.readFileSync(path.join(ROOT, f), "utf8");
-    for (const re of ALWAYS) assert.ok(!re.test(text), `${f} matches ${re}`);
+    const text = readText(f);
+    if (text !== null) for (const re of ALWAYS) assert.ok(!re.test(text), `${f} matches ${re}`);
   }
   for (const must of ["LICENSE", "CHANGELOG.md", "README.md", "skills/recall/SKILL.md", "docs/hosts.md", "docs/evidence.md"]) assert.ok(packed.includes(must), must);
 });
@@ -71,12 +82,14 @@ test("the version is 0.5.2 everywhere and the changelog has its entry", () => {
   assert.equal(pkg.license, "MIT");
 });
 
-test("the README documents the one-line install and uninstall, the privacy section, the kill switch and the costs", () => {
+test("the README documents the one-line install and uninstall, the privacy section, pausing and the costs, and links the full reference", () => {
   const readme = fs.readFileSync(path.join(ROOT, "README.md"), "utf8");
   for (const needle of [
     "npx -y @just-every/plugin-recall", "npx -y @just-every/plugin-recall uninstall",
-    "## Privacy", "## Kill switch", "## Uninstall", "## Costs", "rm -rf ~/.plugin-recall",
+    "## Privacy", "npx -y @just-every/plugin-recall pause", "## Uninstall", "## Costs", "rm -rf ~/.plugin-recall", "](docs/reference.md",
   ]) assert.ok(readme.includes(needle), needle);
+  const reference = fs.readFileSync(path.join(ROOT, "docs", "reference.md"), "utf8");
+  for (const needle of ["## Privacy", "## Kill switch", "## Uninstall", "## Costs", "## Configuration"]) assert.ok(reference.includes(needle), needle);
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8"));
   assert.match(pkg.repository.url, /just-every\/plugin-recall\.git$/);
 });

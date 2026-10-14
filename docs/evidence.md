@@ -29,7 +29,7 @@ The current defaults follow from these: same repo first with a tight global chan
 
 ## Precision rules (an audit of the live hook, then an offline test of four rules)
 
-A live audit of what the hook injected found 38% of the cards misleading. An offline evaluation then replayed 274 labelled messages (the live firings, the 160 normal-flow messages of study B and the 85 correction moments of study A, with their judged labels) with the eligibility rules applied to the ranked candidates and the next eligible candidate filling each slot. Four rules, together, cut the messages carrying a misleading card by 10.2 points (pooled; 95% interval -15.0 to -5.5) and left the share of messages with a useful card unchanged (-0.7 points; -4.4 to +2.6). They are in the plugin as defaults (README, "Precision rules").
+A live audit of what the hook injected found 38% of the cards misleading. An offline evaluation then replayed 274 labelled messages (the live firings, the 160 normal-flow messages of study B and the 85 correction moments of study A, with their judged labels) with the eligibility rules applied to the ranked candidates and the next eligible candidate filling each slot. Four rules, together, cut the messages carrying a misleading card by 10.2 points (pooled; 95% interval -15.0 to -5.5) and left the share of messages with a useful card unchanged (-0.7 points; -4.4 to +2.6). They are in the plugin as defaults ([reference](reference.md#precision-rules)).
 
 - RG, a placeholder gist (`gist_source: "none"`): the cards of session-opening messages, 65% of them misleading.
 - RU, the statement cites a URL, a local port or a file path.

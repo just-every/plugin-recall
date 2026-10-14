@@ -2,7 +2,7 @@
 // (camelCase keys = the field names below), then the built-in default. The file exists because the Claude Code and Codex desktop apps do not
 // pass your shell environment to hook processes, so a setting like the daily cap could not otherwise be changed for live use.
 // An invalid value, in either layer, throws a ConfigError (loud): it is never replaced by a default or ignored. The hooks catch it, log it
-// and stay silent. The file is read on every call (it is small); nothing is cached. See README.md for the table.
+// and stay silent. The file is read on every call (it is small); nothing is cached. See docs/reference.md for the table.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -58,7 +58,7 @@ const FIELDS = [
   // expressions (case-insensitive): a typed turn that matches one is not indexed.
   ["filterProfiles", "RECALL_FILTER_PROFILES", Object.freeze([]), "list", { allowed: ["fleet"] }],
   ["dropPatterns", "RECALL_DROP_PATTERNS", Object.freeze([]), "list", { json: true, check: (v) => { try { new RegExp(v, "i"); return true; } catch (e) { return `${JSON.stringify(v)} is not a regular expression (${e.message})`; } } }],
-  // v2 behaviour flags (docs/cards-prompt.md, README "v2"). Each one set to its v1 value (see V1_ENV: k 5) reproduces v1 exactly.
+  // v2 behaviour flags (docs/cards-prompt.md, docs/reference.md "Configuration"). Each one set to its v1 value (see V1_ENV: k 5) reproduces v1 exactly.
   // A statement whose card is one of these kinds is never injected; every other kind is eligible (rule, preference, decision, correction and
   // other: facts and task requests). A statement without a card is not eligible. With the card filter on the injection is a block of typed
   // cards (kind, scope, date, gist) instead of v1's bare dated quotes. Environment: comma separated, "none" for an empty list.
@@ -115,7 +115,7 @@ const FIELDS = [
   // replaces the standard homes for reading, and only entries with protected:false and manual:false may run a worker. Off by default.
   ["homesRoster", "RECALL_HOMES_ROSTER", "", "str"],
   // CLI worker routing. By default a worker runs under the current host's own home; claudeHome / codexHome pin another one; usageCmd turns on
-  // usage-based choice among the candidate homes (a command that prints `--json` usage, see README "Home routing").
+  // usage-based choice among the candidate homes (a command that prints `--json` usage, see docs/reference.md "Many accounts and agent fleets").
   ["claudeHome", "RECALL_CLAUDE_HOME", "", "str"],
   ["codexHome", "RECALL_CODEX_HOME", "", "str"],
   ["usageCmd", "RECALL_USAGE_CMD", "", "str"],

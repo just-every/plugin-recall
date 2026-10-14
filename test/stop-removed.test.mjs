@@ -51,8 +51,8 @@ test("no Stop config key is left; a config.json that still has one is invalid, a
   assert.throws(() => parseHookInput({ stdin: JSON.stringify({ session_id: "s", prompt_id: "p", hook_event_name: "Stop", last_assistant_message: "x" }) }), /unsupported hook event "Stop"/);
 });
 
-test("the README tells upgraders that a config.json with a removed key is invalid", () => {
-  const readme = fs.readFileSync(path.join(ROOT, "README.md"), "utf8");
-  assert.match(readme, /`config\.json` that still has a removed key[^.]*invalid/i);
-  assert.match(readme, /stopMinChars/);
+test("the reference tells upgraders that a config.json with a removed key is invalid", () => {
+  const reference = fs.readFileSync(path.join(ROOT, "docs", "reference.md"), "utf8");
+  assert.match(reference, /`config\.json` that still has a removed key[^.]*invalid/i);
+  assert.match(reference, /stopMinChars/);
 });
