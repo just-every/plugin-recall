@@ -4,7 +4,7 @@ Recall helps your coding agent remember what you told it before. When something 
 
 [![Recall film: a gold-foil goldfish on a book cover is re-stitched into the word Recall, then the install command npx -y @just-every/plugin-recall appears](https://raw.githubusercontent.com/just-every/plugin-recall/main/media/recall-film.gif)](https://youtu.be/gR-NN552JGo)
 
-*The Recall film (3:24): why agents forget what you told them, and how Recall brings it back. Click to watch on YouTube.*
+*Explainer video (3:24)*
 
 ## Install
 
