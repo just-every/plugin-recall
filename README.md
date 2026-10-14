@@ -2,6 +2,10 @@
 
 Recall is a memory plugin. RAG misses nuance: the small thing you said three weeks ago, in another thread, that matters for exactly this request ("no fallbacks, show me the failure", "keep the diff small", "ask before touching the database"). Recall mines the messages **you typed** in your Claude Code, Codex and Every Code history, finds the few that matter for the request in front of the agent, and brings them back through **one hook, `UserPromptSubmit`**. It acts only when you send a message.
 
+[![Recall film: a gold-foil goldfish on a book cover is re-stitched into the word Recall, then the install command npx -y @just-every/plugin-recall appears](https://raw.githubusercontent.com/just-every/plugin-recall/main/media/recall-film.gif)](https://youtu.be/gR-NN552JGo)
+
+*The Recall film (3:24): why agents forget what you told them, and how Recall brings it back. Click to watch on YouTube.*
+
 It injects at most 3 short **typed memory cards**:
 
 ```
